@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# coding=utf-8
+
+
 """
 Django settings for pelican_publisher project.
 
@@ -15,7 +19,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -27,7 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,11 +39,15 @@ INSTALLED_APPS = [
     # 'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_celery_results',
+
+    'pp_webhook',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -60,7 +66,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+                # 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -68,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pelican_publisher.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -79,7 +84,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -99,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -113,8 +116,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Celery
+# http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
