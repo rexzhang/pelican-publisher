@@ -126,3 +126,7 @@ STATIC_URL = '/static/'
 
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# Pelican
+
+PELICAN_OUTPUT_PATH = '/tmp/output'

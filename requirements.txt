@@ -1,4 +1,5 @@
+daphne
+celery[redis]
+
 django
 django-celery-results
-
-celery[redis]
