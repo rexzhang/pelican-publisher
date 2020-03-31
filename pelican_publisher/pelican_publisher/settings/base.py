@@ -128,5 +128,16 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 # Pelican
+PELICAN = {
+    'OUTPUT_PATH': '/tmp/pelican-output',
 
-PELICAN_OUTPUT_PATH = '/tmp/output'
+    # 'SITES': [
+    #     {
+    #         'SITE_NAME': 'pelican-blog',
+    #         'SITE_SOURCE_ZIP_URL': 'https://github.com/getpelican/pelican-blog/archive/master.zip',
+    #     },
+    # ]
+    'SITE_NAME': 'rexzhang.com',
+    'SITE_SOURCE_ZIP_URL': 'https://github.com/rexzhang/rexzhang.com/archive/master.zip',
+    'SITE_TOKEN': 'site-token-please-change-it',
+}

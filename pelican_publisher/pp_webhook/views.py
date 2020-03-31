@@ -4,7 +4,7 @@
 
 from django.views.generic import TemplateView
 
-from .tasks import demo_task
+from .tasks import builder_pelican_site
 
 
 class GithubPushView(TemplateView):
@@ -14,5 +14,5 @@ class GithubPushView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['latest_articles'] = 'aaaaa'
 
-        demo_task.delay()
+        builder_pelican_site.delay()
         return context

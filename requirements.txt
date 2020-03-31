@@ -1,5 +1,7 @@
 daphne
 celery[redis]
+sentry-sdk
 
 django
 django-celery-results
+urllib3
