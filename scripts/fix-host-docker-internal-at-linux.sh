@@ -2,6 +2,7 @@
 
 # https://dev.to/bufferings/access-host-from-a-docker-container-4099
 # https://github.com/bufferings/docker-access-host
+# fix docker inside access linux host's service, eg:  postgresql/redis ...
 
 HOST_DOMAIN="host.docker.internal"
 ping -q -c1 "$HOST_DOMAIN" > /dev/null 2>&1
