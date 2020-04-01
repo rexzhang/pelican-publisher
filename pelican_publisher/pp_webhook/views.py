@@ -25,6 +25,7 @@ def github_webhook(request):
     if request.method != 'POST':
         return HttpResponseRedirect('/')
 
+    # https://gist.github.com/vitorfs/145a8b8f0865cb65ee915e0c846fc303
     # Verify if request came from GitHub
     forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if forwarded_for is None:

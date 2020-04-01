@@ -20,6 +20,7 @@ EXPOSE 8000
 RUN mkdir /pelican-output
 VOLUME /pelican-output
 
+RUN ./manage.py migrate --no-input
 #RUN ./manage.py collectstatic --no-input
 
 # TODO: nobody
