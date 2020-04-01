@@ -66,11 +66,11 @@ def github_webhook(request):
         return HttpResponse('pong')
     elif event == 'push':
         # Deploy some code for example
-        logger.info(request.POST)
         logger.info(request.body)
         builder_pelican_site.delay()
         logger.info('webhook request process finished')
         return HttpResponse('success')
 
-    # In case we receive an event that's not ping or push
-    return HttpResponse(status=204)
+    # In case we receive an event that's not ping or push or other support event
+    logger.warning('can not support event: {}'.format(event))
+    return HttpResponse('Can not support event: {}'.format(event), status=204)
