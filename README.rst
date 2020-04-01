@@ -4,6 +4,30 @@ Pelican Publisher
     An automatic build/publish service for `pelican <https://blog.getpelican.com/>`__ website in docker
 
 
+Setup
+-----
+
+Create file `pelican-publisher.env`
+
+.. code-block::
+
+    PELICAN_SITE_SECRET=your-github-webhook-secret
+
+Create docker pod
+
+.. code-block::
+
+    docker pull ray1ex/pelican-publisher
+    docker run -dit -p 127.0.0.1:8000:8000 -v=/var/www/pelican-output:/pelican-output --env-file pelican-publisher.env --name pelican-publisher ray1ex/pelican-publisher
+
+
+Example
+-------
+Source git repos: https://github.com/rexzhang/rexzhang.com
+
+Target website: https://rexzhang.com
+
+
 TODO
 ----
 - publish/build history
