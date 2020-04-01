@@ -4,7 +4,7 @@
 
 from django.views.generic import TemplateView
 
-from .tasks import builder_pelican_site
+from pp_core.tasks import builder_pelican_site
 
 
 class GithubPushView(TemplateView):

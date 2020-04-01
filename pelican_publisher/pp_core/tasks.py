@@ -8,11 +8,6 @@ from . import runtimes
 
 
 @shared_task(rate_limit='1/m')
-def demo_task():
-    print('demo task')
-
-
-@shared_task(rate_limit='1/m')
 def builder_pelican_site():
     runtimes.builder_pelican_site()
     return

@@ -18,10 +18,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-# from django.contrib import admin
 from django.urls import path, include
 
+from pp_core.views import HomeView
+
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('', view=HomeView.as_view(), name='home'),
     path('webhook/', include(('pp_webhook.urls', 'pp_webhook'), namespace='pp-webhook')),
 ]

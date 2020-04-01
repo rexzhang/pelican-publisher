@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'django_celery_results',
 
+    'pp_core',
     'pp_webhook',
 ]
 
