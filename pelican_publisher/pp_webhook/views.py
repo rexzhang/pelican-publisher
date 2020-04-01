@@ -25,6 +25,7 @@ def github_webhook(request):
     if request.method != 'POST':
         return HttpResponseRedirect('/')
 
+    # https://simpleisbetterthancomplex.com/tutorial/2016/10/31/how-to-handle-github-webhooks-using-django.html
     # https://gist.github.com/vitorfs/145a8b8f0865cb65ee915e0c846fc303
     # Verify if request came from GitHub
     forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -66,6 +67,7 @@ def github_webhook(request):
     elif event == 'push':
         # Deploy some code for example
         logger.info(request.POST)
+        logger.info(request.body)
         builder_pelican_site.delay()
         logger.info('webhook request process finished')
         return HttpResponse('success')

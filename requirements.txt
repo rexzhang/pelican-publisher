@@ -5,4 +5,3 @@ sentry-sdk
 django
 django-celery-results
 requests
-urllib3

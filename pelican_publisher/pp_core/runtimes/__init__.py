@@ -9,7 +9,7 @@ from pathlib import Path, PurePath
 from shutil import rmtree
 from logging import getLogger
 
-import urllib3
+import requests
 from django.conf import settings
 
 logger = getLogger(__name__)
@@ -45,13 +45,12 @@ def download_and_extract_zip_from_github():
     logger.debug('zip file name: {}'.format(zip_file_name))
 
     # download zip file
-    http = urllib3.PoolManager()
-    r = http.request('GET', zip_file_url)
-    if r.status != 200:
+    r = requests.get(zip_file_url)
+    if not r.ok:
         logger.error('download failed')
         return None, None
 
-    open(zip_file_name, 'wb').write(r.data)
+    open(zip_file_name, 'wb').write(r.content)
     logger.info('download finished')
 
     # extract zip file
@@ -72,9 +71,7 @@ def download_and_extract_zip_from_github():
     return site_stage_path, site_file_path
 
 
-def generate_site_to_local_file(
-    content_path, settings_file, output_path
-):
+def generate_site_to_local_file(content_path, settings_file, output_path):
     subprocess.run(
         ['pelican', '-s', settings_file, '-o', output_path, content_path]
     )
