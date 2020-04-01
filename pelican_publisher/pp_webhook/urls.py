@@ -4,8 +4,8 @@
 
 from django.urls import path
 
-from .views import GithubPushView
+from . import views
 
 urlpatterns = [
-    path('github-push', view=GithubPushView.as_view(), name='github-push'),
+    path('github', view=views.github_webhook, name='github'),
 ]
