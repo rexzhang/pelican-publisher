@@ -64,8 +64,9 @@ def github_webhook(request):
         return HttpResponse('pong')
     elif event == 'push':
         # Deploy some code for example
-        # builder_pelican_site.delay()
         logger.info(request.POST)
+        builder_pelican_site.delay()
+        logger.info('webhook request process finished')
         return HttpResponse('success')
 
     # In case we receive an event that's not ping or push
