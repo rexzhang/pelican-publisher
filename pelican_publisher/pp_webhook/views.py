@@ -4,6 +4,7 @@
 
 import hmac
 from hashlib import sha1
+from datetime import datetime
 from logging import getLogger
 
 from django.conf import settings
@@ -14,9 +15,17 @@ from django.utils.encoding import force_bytes
 import requests
 from ipaddress import ip_address, ip_network
 
-from pp_core.tasks import builder_pelican_site
+from pp_core.tasks import build_pelican_site
 
 logger = getLogger(__name__)
+
+
+def test(request):
+    if not settings.DEBUG:
+        return HttpResponseForbidden('Permission denied.')
+
+    build_pelican_site.delay('test', datetime.now())
+    return HttpResponse('success')
 
 
 @csrf_exempt
@@ -67,7 +76,7 @@ def github_webhook(request):
     elif event == 'push':
         # Deploy some code for example
         logger.info(request.body)
-        builder_pelican_site.delay()
+        build_pelican_site.delay()
         logger.info('webhook request process finished')
         return HttpResponse('success')
 

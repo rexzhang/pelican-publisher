@@ -20,12 +20,17 @@ Create docker pod
     docker pull ray1ex/pelican-publisher
     docker run -dit -p 127.0.0.1:8000:8000 -v=/var/www/pelican-output:/pelican-output --env-file pelican-publisher.env --name pelican-publisher ray1ex/pelican-publisher
 
+Your site output path
+
+    /var/www/pelican-output
 
 Example
 -------
-Source git repos: https://github.com/rexzhang/rexzhang.com
-
-Target website: https://rexzhang.com
+=================   ========================================
+source git repos    https://github.com/rexzhang/rexzhang.com
+-----------------   ----------------------------------------
+target website      https://rexzhang.com
+=================   ========================================
 
 
 TODO

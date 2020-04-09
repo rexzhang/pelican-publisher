@@ -5,7 +5,33 @@
   <title>Pelican Publisher</title>
 </head>
 <body>
-<h1>Pelican Publisher</h1>
-https://github.com/rexzhang/pelican-publisher
+<header>
+  <h1>Pelican Publisher</h1>
+  <hr>
+</header>
+<main>
+  <h2>Pending Tasks</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>info</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for pending in pending_list %}
+    <tr>
+      <td>{{ pending.id }}</td>
+      <td>{{ pending.info }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</main>
+<footer>
+  <br>
+  <hr>
+  <a href="https://github.com/rexzhang/pelican-publisher">git repos</a>
+</footer>
 </body>
 </html>

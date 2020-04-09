@@ -15,7 +15,7 @@ from django.conf import settings
 logger = getLogger(__name__)
 
 
-def builder_pelican_site():
+def build_pelican_site():
     site_stage_path, site_file_path = download_and_extract_zip_from_github()
     if site_file_path is None:
         return
