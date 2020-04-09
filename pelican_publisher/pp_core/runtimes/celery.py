@@ -2,8 +2,11 @@
 # coding=utf-8
 
 import json
+from logging import getLogger
 
 import redis
+
+logger = getLogger(__name__)
 
 
 def get_pending_task_list():

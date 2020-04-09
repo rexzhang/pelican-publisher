@@ -2,8 +2,10 @@
 # coding=utf-8
 
 
-from django.views.generic import TemplateView, DetailView
+import json
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView, DetailView
 from django_celery_results.models import TaskResult
 
 from .runtimes.celery import get_pending_task_list
@@ -41,6 +43,7 @@ class TaskResultDetailView(DetailView):
         if obj is None:
             raise ObjectDoesNotExist('incorrect task id')
 
+        obj.result = json.loads(obj.result)
         return obj
 
     def get_context_data(self, **kwargs):

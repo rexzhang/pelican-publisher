@@ -15,8 +15,22 @@ from django.conf import settings
 logger = getLogger(__name__)
 
 
+def _run_subprocess_run(cmd):
+    r = subprocess.run(
+        cmd,
+        capture_output=True, encoding='utf-8', universal_newlines=True
+    )
+    return_code = r.returncode
+    output = r.stdout
+    output += '\n'
+    output += r.stderr
+
+    logger.info('returncode: {}'.format(return_code))
+    return return_code, output
+
+
 def build_pelican_site():
-    site_stage_path, site_file_path = download_and_extract_zip_from_github()
+    site_stage_path, site_file_path = _download_and_extract_zip_from_github()
     if site_file_path is None:
         return
 
@@ -24,16 +38,16 @@ def build_pelican_site():
     settings_file = PurePath(site_file_path).joinpath('pelicanconf.py')
     output_path = settings.PELICAN['OUTPUT_PATH']
 
-    generate_site_to_local_file(
+    result = _generate_site_to_local_file(
         content_path=content_path, settings_file=settings_file, output_path=output_path
     )
 
     # cleanup
     rmtree(site_stage_path, ignore_errors=True)
-    return
+    return result
 
 
-def download_and_extract_zip_from_github():
+def _download_and_extract_zip_from_github():
     """
     from https://pelican-blog/archive/master.zip
     to: /path/pelican-blog
@@ -71,9 +85,14 @@ def download_and_extract_zip_from_github():
     return site_stage_path, site_file_path
 
 
-def generate_site_to_local_file(content_path, settings_file, output_path):
-    subprocess.run(
-        ['pelican', '-s', settings_file, '-o', output_path, content_path]
-    )
+def _generate_site_to_local_file(content_path, settings_file, output_path):
+    return_code, output = _run_subprocess_run(['pelican', '-s', settings_file, '-o', output_path, content_path])
+
     logger.info('build to: {} finished'.format(output_path))
-    return
+    return output
+
+
+def test(arg1, arg2):
+    logger.info('this is test logging message')
+    return_code, output = _run_subprocess_run(['ls', '-la'])
+    return output

@@ -1,5 +1,6 @@
 daphne
 celery[redis]
+redis
 sentry-sdk
 
 django

@@ -15,16 +15,13 @@ from django.utils.encoding import force_bytes
 import requests
 from ipaddress import ip_address, ip_network
 
-from pp_core.tasks import build_pelican_site
+from pp_core.tasks import build_pelican_site_task
 
 logger = getLogger(__name__)
 
 
 def test(request):
-    if not settings.DEBUG:
-        return HttpResponseForbidden('Permission denied.')
-
-    build_pelican_site.delay('test', datetime.now())
+    build_pelican_site_task.delay('test', datetime.now())
     return HttpResponse('success')
 
 
@@ -76,7 +73,7 @@ def github_webhook(request):
     elif event == 'push':
         # Deploy some code for example
         logger.info(request.body)
-        build_pelican_site.delay(
+        build_pelican_site_task.delay(
             settings.PELICAN['SITE_NAME'],
             datetime.now()
         )

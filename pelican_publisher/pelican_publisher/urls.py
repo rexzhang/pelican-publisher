@@ -19,11 +19,17 @@ Including another URLconf
 """
 
 from django.urls import path, include
+from django.conf import settings
 
-from pp_core.views import HomeView, TaskResultDetailView
+from pp_core import views
 
 urlpatterns = [
-    path('', view=HomeView.as_view(), name='home'),
-    path('<pk>/', TaskResultDetailView.as_view(), name='task-result-detail'),
+    path('', view=views.HomeView.as_view(), name='home'),
+    path('task_result/<pk>/', views.TaskResultDetailView.as_view(), name='task-result-detail'),
     path('webhook/', include(('pp_webhook.urls', 'pp_webhook'), namespace='pp-webhook')),
 ]
+
+if settings.DEBUG:
+    urlpatterns.append(
+        path('test/', view=views.TestView.as_view(), name='test')
+    )
