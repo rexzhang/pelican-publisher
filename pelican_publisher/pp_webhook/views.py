@@ -76,7 +76,10 @@ def github_webhook(request):
     elif event == 'push':
         # Deploy some code for example
         logger.info(request.body)
-        build_pelican_site.delay()
+        build_pelican_site.delay(
+            settings.PELICAN['SITE_NAME'],
+            datetime.now()
+        )
         logger.info('webhook request process finished')
         return HttpResponse('success')
 

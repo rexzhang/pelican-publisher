@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<h2>Task Results Detail</h2>
+<table>
+  <tbody>
+  <tr>
+    <th>task_id</th>
+    <td>{{ object.task_id }}</td>
+  </tr>
+  <tr>
+    <th>task_args</th>
+    <td>{{ object.task_args }}</td>
+  </tr>
+  <tr>
+    <th>status</th>
+    <td>{{ object.status }}</td>
+  </tr>
+  <tr>
+    <th>date_created</th>
+    <td>{{ object.date_created|date:"c" }}</td>
+  </tr>
+  <tr>
+    <th>date_done</th>
+    <td>{{ object.date_done|date:"c" }}</td>
+  </tr>
+  <tr>
+    <th>result</th>
+    <td>{{ object.result }}</td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

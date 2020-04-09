@@ -20,9 +20,10 @@ Including another URLconf
 
 from django.urls import path, include
 
-from pp_core.views import HomeView
+from pp_core.views import HomeView, TaskResultDetailView
 
 urlpatterns = [
     path('', view=HomeView.as_view(), name='home'),
+    path('<pk>/', TaskResultDetailView.as_view(), name='task-result-detail'),
     path('webhook/', include(('pp_webhook.urls', 'pp_webhook'), namespace='pp-webhook')),
 ]
