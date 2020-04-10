@@ -6,7 +6,12 @@
 </head>
 <body>
 
+{% include "pp_core/_header.html" %}
+
 <h2>Task Results Detail</h2>
+
+<h3>Summary</h3>
+<hr>
 <table>
   <tbody>
   <tr>
@@ -32,9 +37,11 @@
   </tbody>
 </table>
 
-<h3>result</h3>
+<h3>Result</h3>
+<hr>
 <div style="white-space: pre-line">
   {{ object.result }}
 </div>
+{% include "pp_core/_footer.html" %}
 </body>
 </html>

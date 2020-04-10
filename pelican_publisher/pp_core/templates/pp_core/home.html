@@ -5,57 +5,11 @@
   <title>Pelican Publisher</title>
 </head>
 <body>
-<header>
-  <h1>Pelican Publisher</h1>
-  <hr>
-</header>
+{% include "pp_core/_header.html" %}
 <main>
-  <h2>Pending Tasks</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>id</th>
-      <th>info</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for pending in pending_list %}
-    <tr>
-      <td>{{ pending.id }}</td>
-      <td>{{ pending.info }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <h2>Task Results(last 10)</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>task_id</th>
-      <th>task_args</th>
-      <th>status</th>
-      <th>date_created</th>
-      <th>date_done</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for task_result in task_result_list %}
-    <tr>
-      <td><a href="{% url 'task-result-detail' task_result.task_id %}">{{ task_result.task_id }}</a></td>
-      <td>{{ task_result.task_args }}</td>
-      <td>{{ task_result.status }}</td>
-      <td>{{ task_result.date_created|date:"c" }}</td>
-      <td>{{ task_result.date_done|date:"c" }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+  {% include "pp_core/_pending_task_list.html" %}
+  {% include "pp_core/_task_result_list.html" %}
 </main>
-<footer>
-  <br>
-  <hr>
-  <a href="https://github.com/rexzhang/pelican-publisher">git repos</a>
-</footer>
+{% include "pp_core/_footer.html" %}
 </body>
 </html>

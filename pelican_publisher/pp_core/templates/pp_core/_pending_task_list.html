@@ -1,0 +1,19 @@
+<h2>Pending Tasks</h2>
+<table>
+  <thead>
+  {% if pending_list %}
+  <tr>
+    <th>task_id</th>
+    <th>task_args</th>
+  </tr>
+  {% endif %}
+  </thead>
+  <tbody>
+  {% for pending in pending_list %}
+  <tr>
+    <td>{{ pending.id }}</td>
+    <td>{{ pending.info }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>

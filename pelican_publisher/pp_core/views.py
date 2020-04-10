@@ -29,7 +29,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['pending_list'] = get_pending_task_list()
-        context['task_result_list'] = TaskResult.objects.all()
+        context['task_result_list'] = TaskResult.objects.all()[:10]
         return context
 
 
