@@ -18,7 +18,7 @@ from .base import *
 # Security
 #
 DEBUG = False
-ALLOWED_HOSTS = ['pelican-publisher.rexzhang.com']
+ALLOWED_HOSTS = []
 
 #
 # Sentry

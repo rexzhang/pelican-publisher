@@ -36,7 +36,7 @@ def build_pelican_site():
 
     content_path = PurePath(site_file_path).joinpath('content')
     settings_file = PurePath(site_file_path).joinpath('pelicanconf.py')
-    output_path = settings.PELICAN['OUTPUT_PATH']
+    output_path = settings.PELICAN['PUBLISHER_OUTPUT_PATH']
 
     result = _generate_site_to_local_file(
         content_path=content_path, settings_file=settings_file, output_path=output_path

@@ -1,2 +1,4 @@
+-r common.txt
+
 pelican
 markdown

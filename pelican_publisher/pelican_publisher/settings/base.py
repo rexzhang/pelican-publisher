@@ -130,7 +130,7 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 # Pelican
 PELICAN = {
-    'OUTPUT_PATH': '/tmp/pelican-output',
+    'PUBLISHER_OUTPUT_PATH': '/tmp/publisher-output',
 
     # 'SITES': [
     #     {

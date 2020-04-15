@@ -1,0 +1,13 @@
+django
+requests
+
+# deploy
+#daphne
+uvicorn
+ASGIMiddlewareStaticFile
+sentry-sdk
+
+# task
+celery[redis]
+redis
+django-celery-results

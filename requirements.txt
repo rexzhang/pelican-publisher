@@ -1,8 +1,1 @@
-daphne
-celery[redis]
-redis
-sentry-sdk
-
-django
-django-celery-results
-requests
+-r requirements/common.txt
