@@ -1,9 +1,9 @@
 FROM python:3
 
 # ---------- TODO:develop env only
-COPY deploy/debian/sources.list.txt /etc/apt/sources.list
-RUN pip config set global.index-url http://host.docker.internal:3141/root/pypi/+simple/
-RUN pip config set install.trusted-host host.docker.internal
+#COPY deploy/debian/sources.list.txt /etc/apt/sources.list
+#RUN pip config set global.index-url http://host.docker.internal:3141/root/pypi/+simple/
+#RUN pip config set install.trusted-host host.docker.internal
 # ----------
 
 COPY . /app
