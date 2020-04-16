@@ -4,8 +4,11 @@
 
 import json
 from os import getenv
+from logging import getLogger
 
 from .release import *
+
+logger = getLogger(__name__)
 
 PELICAN_PUBLISHER['WORKING_ROOT'] = '/tmp/pp-working'
 PELICAN_PUBLISHER['OUTPUT_ROOT'] = '/tmp/pp-output'
@@ -20,17 +23,20 @@ if pelican_publisher_domain == '':
     pelican_publisher_domain = '*'
 
 ALLOWED_HOSTS.append(pelican_publisher_domain)
+logger.info('ALLOWED_HOSTS: {}'.format(ALLOWED_HOSTS))
 
-# update settings.PELICAN_SITE_SOURCES
-pelican_site_sources_json_str = getenv('PELICAN_SITE_SOURCES', '')
-if pelican_site_sources_json_str != '':
+# update settings.PELICAN_SITES
+pelican_sites_json_str = getenv('PELICAN_SITES', '')
+if pelican_sites_json_str != '':
     try:
-        pelican_site_sources = json.loads(pelican_site_sources_json_str)
-        for pelican_site_source in pelican_site_sources:
-            if set(pelican_site_source.keys()) < {'NAME', 'ZIP_URL', 'SECRET'}:
+        pelican_sites = json.loads(pelican_sites_json_str)
+        for pelican_site_info in pelican_sites:
+            if set(pelican_site_info.keys()) < {'NAME', 'ZIP_URL', 'WEBHOOK_SECRET'}:
                 raise ValueError
 
-        PELICAN_SITE_SOURCES = pelican_site_sources
+        PELICAN_SITES = pelican_sites
+        logger.info('env PELICAN_SITES import')
 
     except ValueError:
-        raise Exception('env PELICAN_SITE_SOURCES incorrect')
+        logger.critical('env PELICAN_SITES incorrect')
+        raise Exception('env PELICAN_SITES incorrect')

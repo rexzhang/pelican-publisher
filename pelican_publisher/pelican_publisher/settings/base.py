@@ -134,11 +134,11 @@ PELICAN_PUBLISHER = {
     'OUTPUT_ROOT': '/tmp',
 }
 
-PELICAN_SITE_SOURCES = [
+PELICAN_SITES = [
     {
         'NAME': 'rexzhang.com',
         'TYPE': 'GITHUB',
         'ZIP_URL': 'https://github.com/rexzhang/rexzhang.com/archive/master.zip',
-        'SECRET': 'please-change-it-!',
+        'WEBHOOK_SECRET': 'please-change-it-!',
     },
 ]

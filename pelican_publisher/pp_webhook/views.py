@@ -7,7 +7,6 @@ from hashlib import sha1
 from datetime import datetime
 from logging import getLogger
 
-from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -62,9 +61,9 @@ def github_webhook(request, site_name):
 
     site_info = get_site_info_by_name(site_name)
 
-    mac = hmac.new(force_bytes(site_info['SECRET']), msg=force_bytes(request.body), digestmod=sha1)
+    mac = hmac.new(force_bytes(site_info['WEBHOOK_SECRET']), msg=force_bytes(request.body), digestmod=sha1)
     if not hmac.compare_digest(force_bytes(mac.hexdigest()), force_bytes(signature)):
-        logger.warning('webhook SECRET no match')
+        logger.warning('WEBHOOK_SECRET no match')
         return HttpResponseForbidden('Permission denied.')
 
     # If request reached this point we are in a good shape
