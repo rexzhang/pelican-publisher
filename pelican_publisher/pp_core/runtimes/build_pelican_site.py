@@ -2,6 +2,7 @@
 # coding=utf-8
 
 
+import os.path
 import subprocess
 from logging import getLogger
 from pathlib import PurePath, Path
@@ -11,6 +12,8 @@ from zipfile import ZipFile
 
 import requests
 from django.conf import settings
+
+from pp_core.runtimes.common import get_site_info_by_name
 
 logger = getLogger(__name__)
 
@@ -29,34 +32,46 @@ def _run_subprocess_run(cmd):
     return return_code, output
 
 
-def build_pelican_site():
-    site_stage_path, site_file_path = _download_and_extract_zip_from_github()
+def build_pelican_site(site_name):
+    site_info = get_site_info_by_name(site_name)
+
+    # get source
+    site_stage_path, site_file_path = _download_and_extract_zip_from_github(site_info)
     if site_file_path is None:
         return
 
+    # generate site
     content_path = PurePath(site_file_path).joinpath('content')
     settings_file = PurePath(site_file_path).joinpath('pelicanconf.py')
-    output_path = settings.PELICAN['PUBLISHER_OUTPUT_PATH']
-
     result = _generate_site_to_local_file(
-        content_path=content_path, settings_file=settings_file, output_path=output_path
+        pelican_content_path=content_path, pelican_settings_file=settings_file, site_info=site_info
     )
 
     # cleanup
-    rmtree(site_stage_path, ignore_errors=True)
+    if not settings.DEBUG:
+        rmtree(site_stage_path, ignore_errors=True)
+
     return result
 
 
-def _download_and_extract_zip_from_github():
+def _download_and_extract_zip_from_github(site_info):
     """
     from https://pelican-blog/archive/master.zip
     to: /path/pelican-blog
     """
-    tmp_name = 'p-{}-{}'.format(settings.PELICAN['SITE_NAME'], uuid4().hex)
-    zip_file_url = settings.PELICAN['SITE_SOURCE_ZIP_URL']
-    zip_file_name = PurePath('/tmp').joinpath('{}-branch.zip'.format(tmp_name)).as_posix()
-    site_stage_path = PurePath('/tmp').joinpath('{}-stage'.format(tmp_name))
+    unique_id = uuid4().hex
+    zip_file_url = site_info['ZIP_URL']
+
+    zip_file_name = os.path.join(
+        settings.PELICAN_PUBLISHER['WORKING_ROOT'],
+        '{}-{}.zip'.format(site_info['NAME'], unique_id)
+    )
+    site_stage_path = os.path.join(
+        settings.PELICAN_PUBLISHER['WORKING_ROOT'],
+        '{}-{}'.format(site_info['NAME'], unique_id)
+    )
     logger.debug('zip file name: {}'.format(zip_file_name))
+    logger.debug('site stage path: {}'.format(site_stage_path))
 
     # download zip file
     r = requests.get(zip_file_url)
@@ -85,8 +100,13 @@ def _download_and_extract_zip_from_github():
     return site_stage_path, site_file_path
 
 
-def _generate_site_to_local_file(content_path, settings_file, output_path):
-    return_code, output = _run_subprocess_run(['pelican', '-s', settings_file, '-o', output_path, content_path])
+def _generate_site_to_local_file(pelican_content_path, pelican_settings_file, site_info):
+    output_path = os.path.join(
+        settings.PELICAN_PUBLISHER['OUTPUT_ROOT'], site_info['NAME']
+    )
+    return_code, output = _run_subprocess_run([
+        'pelican', '-s', pelican_settings_file, '-o', output_path, pelican_content_path
+    ])
 
     logger.info('build to: {} finished'.format(output_path))
     return output

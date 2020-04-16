@@ -128,17 +128,17 @@ STATIC_URL = '/static/'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
-# Pelican
-PELICAN = {
-    'PUBLISHER_OUTPUT_PATH': '/tmp/publisher-output',
-
-    # 'SITES': [
-    #     {
-    #         'SITE_NAME': 'pelican-blog',
-    #         'SITE_SOURCE_ZIP_URL': 'https://github.com/getpelican/pelican-blog/archive/master.zip',
-    #     },
-    # ]
-    'SITE_NAME': 'rexzhang.com',
-    'SITE_SOURCE_ZIP_URL': 'https://github.com/rexzhang/rexzhang.com/archive/master.zip',
-    'SITE_SECRET': 'please-change-it',
+# Pelican Publisher
+PELICAN_PUBLISHER = {
+    'WORKING_ROOT': '/tmp',
+    'OUTPUT_ROOT': '/tmp',
 }
+
+PELICAN_SITE_SOURCES = [
+    {
+        'NAME': 'rexzhang.com',
+        'TYPE': 'GITHUB',
+        'ZIP_URL': 'https://github.com/rexzhang/rexzhang.com/archive/master.zip',
+        'SECRET': 'please-change-it-!',
+    },
+]

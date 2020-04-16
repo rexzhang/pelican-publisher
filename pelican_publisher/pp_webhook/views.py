@@ -15,19 +15,20 @@ from django.utils.encoding import force_bytes
 import requests
 from ipaddress import ip_address, ip_network
 
+from pp_core.runtimes.common import get_site_info_by_name
 from pp_core.tasks import build_pelican_site_task
 
 logger = getLogger(__name__)
 
 
 def test(request):
-    build_pelican_site_task.delay('test', datetime.now())
+    build_pelican_site_task.delay('rexzhang.com', datetime.now())
     return HttpResponse('success')
 
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
-def github_webhook(request):
+def github_webhook(request, site_name):
     if request.method != 'POST':
         return HttpResponseRedirect('/')
 
@@ -59,7 +60,9 @@ def github_webhook(request):
     if sha_name != 'sha1':
         return HttpResponseServerError('Operation not supported.', status=501)
 
-    mac = hmac.new(force_bytes(settings.PELICAN['SITE_SECRET']), msg=force_bytes(request.body), digestmod=sha1)
+    site_info = get_site_info_by_name(site_name)
+
+    mac = hmac.new(force_bytes(site_info['SECRET']), msg=force_bytes(request.body), digestmod=sha1)
     if not hmac.compare_digest(force_bytes(mac.hexdigest()), force_bytes(signature)):
         logger.warning('webhook SECRET no match')
         return HttpResponseForbidden('Permission denied.')
@@ -72,11 +75,8 @@ def github_webhook(request):
         return HttpResponse('pong')
     elif event == 'push':
         # Deploy some code for example
-        logger.info(request.body)
-        build_pelican_site_task.delay(
-            settings.PELICAN['SITE_NAME'],
-            datetime.now()
-        )
+        logger.debug(request.body)
+        build_pelican_site_task.delay(site_name, datetime.now())
         logger.info('webhook request process finished')
         return HttpResponse('success')
 

@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-slim
 
 # ---------- TODO:develop env only
 #COPY deploy/debian/sources.list.txt /etc/apt/sources.list
@@ -17,12 +17,13 @@ RUN pip install --no-cache-dir -r /app/requirements/docker.txt
 WORKDIR /app/pelican_publisher
 EXPOSE 8000
 
-RUN mkdir /publisher-output
-VOLUME /publisher-output
+RUN mkdir /pp-output
+RUN mkdir /pp-data
+VOLUME /pp-output
+VOLUME /pp-data
 
-RUN ./manage.py migrate --no-input
 RUN ./manage.py collectstatic --no-input
 
 # TODO: nobody
 #CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && daphne pelican_publisher.asgi:application -b 0.0.0.0
-CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && uvicorn pelican_publisher.asgi:application --host 0.0.0.0
+CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && ./manage.py migrate --no-input && uvicorn pelican_publisher.asgi:application --host 0.0.0.0
