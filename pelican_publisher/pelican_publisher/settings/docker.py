@@ -10,8 +10,7 @@ from .release import *
 
 logger = getLogger(__name__)
 
-PELICAN_PUBLISHER['WORKING_ROOT'] = '/tmp/pp-working'
-PELICAN_PUBLISHER['OUTPUT_ROOT'] = '/tmp/pp-output'
+PELICAN_PUBLISHER['OUTPUT_ROOT'] = '/pp-output'
 DATABASES['default']['NAME'] = '/pp-data/db.sqlite3'
 
 # import setting from env
