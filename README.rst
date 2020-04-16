@@ -20,7 +20,7 @@ Create file ``pelican-publisher.env``
 .. code-block::
 
     PELICAN_PUBLISHER_DOMAIN=pelican-publisher.rexzhang.com
-    PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rexzhang.com/archive/master.zip","SECRET":"please-change-it-!"},["NAME":"sample.com","ZIP_URL":"https://sample.com/master.zip","SECRET":"secret]]
+    PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rexzhang.com/archive/master.zip","SECRET":"please-change-it-!"},{"NAME":"sample.com","ZIP_URL":"https://sample.com/master.zip","SECRET":"secret"}]
 
 - ``PELICAN_PUBLISHER_DOMAIN`` is your publisher host's domain, empty will accept any domain
 - ``PELICAN_SITES`` in JSON format, empty is ``[]``
@@ -34,6 +34,11 @@ Start Service
 
 - Your site will output to path ``/var/www/pp-output/SITE_NAME``
 - Your database file db.sqlite3 will at ``/var/www/pp-data/db.sqlite3``
+
+Setup Webhook
+-------------
+
+webhook url like this ``https://pelican-publisher.rexzhang.com/webhook/github/rexzhang.com``
 
 Example
 -------

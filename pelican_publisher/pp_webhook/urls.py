@@ -8,7 +8,7 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('github', view=views.github_webhook, name='github'),
+    path('github/<str:site_name>', view=views.github_webhook, name='github'),
 ]
 
 if settings.DEBUG:
