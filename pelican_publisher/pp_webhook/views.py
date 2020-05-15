@@ -22,7 +22,7 @@ logger = getLogger(__name__)
 
 def test(request):
     build_pelican_site_task.delay('rexzhang.com', datetime.now())
-    return HttpResponse('success')
+    return HttpResponse('build_pelican_site_task started')
 
 
 @csrf_exempt
