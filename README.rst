@@ -30,7 +30,7 @@ Start Service
 
 .. code-block::
 
-    docker run -dit -p 127.0.0.1:8000:8000 -v=/var/www/pp-output:/pp-output -v=/var/www/pp-data:/pp-data --env-file pelican-publisher.env --name pelican-publisher ray1ex/pelican-publisher
+    docker run -dit -p 127.0.0.1:8000:8000 -v=/var/www/pp-output:/pp-output -v=/var/www/pp-data:/pp-data --env-file pelican-publisher.env --restart unless-stopped --name pelican-publisher ray1ex/pelican-publisher
 
 - Your site will output to path ``/var/www/pp-output/SITE_NAME``
 - Your database file db.sqlite3 will at ``/var/www/pp-data/db.sqlite3``
@@ -39,13 +39,13 @@ Setup Webhook
 -------------
 
 - Github
-    - Payload URL: like this ``https://pelican-publisher.rexzhang.com/webhook/github/rexzhang.com``
+    - Payload URL: like this ``https://rexzhang.com/a/pelican-publisher/webhook/github/rexzhang.com``
     - Content type: application/json
 
 Example
 -------
 =================   ========================================
-instance            https://pelican-publisher.rexzhang.com
+instance            https://rexzhang.com/a/pelican-publisher
 -----------------   ----------------------------------------
 source              https://github.com/rexzhang/rexzhang.com
 -----------------   ----------------------------------------
