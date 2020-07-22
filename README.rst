@@ -39,13 +39,13 @@ Setup Webhook
 -------------
 
 - Github
-    - Payload URL: like this ``https://rexzhang.com/a/pelican-publisher/webhook/github/rexzhang.com``
+    - Payload URL: like this ``https://pelican-publisher.rexzhang.com/webhook/github/rexzhang.com``
     - Content type: application/json
 
 Example
 -------
 =================   ========================================
-instance            https://rexzhang.com/a/pelican-publisher
+instance            https://pelican-publisher.rexzhang.com
 -----------------   ----------------------------------------
 source              https://github.com/rexzhang/rexzhang.com
 -----------------   ----------------------------------------
