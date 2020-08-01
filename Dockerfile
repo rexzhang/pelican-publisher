@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:3.8-slim
 
 # ---------- TODO:develop env only
 #COPY deploy/debian/sources.list.txt /etc/apt/sources.list
