@@ -5,11 +5,29 @@
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView as DjangoTemplateView, DetailView as DjangoDetailView
 from django_celery_results.models import TaskResult
 
+import pelican_publisher
 from .runtimes.celery import get_pending_task_list
 from .tasks import test_task
+
+
+class TemplateView(DjangoTemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['version'] = pelican_publisher.__version__
+
+        return context
+
+
+class DetailView(DjangoDetailView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['version'] = pelican_publisher.__version__
+
+        return context
 
 
 class TestView(TemplateView):
