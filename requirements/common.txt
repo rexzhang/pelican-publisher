@@ -2,12 +2,11 @@ django
 requests
 
 # deploy
-#daphne
 uvicorn
 ASGIMiddlewareStaticFile
 sentry-sdk
 
 # task
-celery[redis]
+celery[redis]<5.0
 redis
 django-celery-results

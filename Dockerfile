@@ -9,7 +9,7 @@ FROM python:3.8-slim
 COPY . /app
 COPY ./pelican_publisher/pelican_publisher/settings/docker.py /app/pelican_publisher/pelican_publisher/settings/running.py
 
-RUN apt-get update && apt-get install --yes supervisor redis-server
+RUN apt-get update && apt-get install --yes supervisor redis-server iproute2 curl
 COPY deploy/supervisor/*.conf /etc/supervisor/conf.d/
 
 RUN pip install --no-cache-dir -r /app/requirements/docker.txt
@@ -25,5 +25,4 @@ VOLUME /pp-data
 RUN ./manage.py collectstatic --no-input
 
 # TODO: nobody
-#CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && daphne pelican_publisher.asgi:application -b 0.0.0.0
-CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && ./manage.py migrate --no-input && uvicorn pelican_publisher.asgi:application --host 0.0.0.0
+CMD /etc/init.d/redis-server start && /etc/init.d/supervisor start && ./manage.py migrate --no-input && ./runserver.py -H 0.0.0.0
