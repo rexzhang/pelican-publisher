@@ -56,13 +56,8 @@ def auto_drop_event_for_rate_limit(event: Event, _) -> Event:
     return event
 
 
-def get_mac_address() -> str:
-    try:
-        import netifaces
-
-    except ImportError:
-        return ''
-
+def get_mac_address_from_netifaces() -> str:
+    import netifaces
     for name in ['eth0', 'en0']:
         try:
             mac = netifaces.ifaddresses(name)[netifaces.AF_LINK][0]['addr']
@@ -73,6 +68,19 @@ def get_mac_address() -> str:
             continue
 
     return mac.upper()
+
+
+def get_mac_address() -> str:
+    try:
+        import netifaces
+        return get_mac_address_from_netifaces()
+
+    except ImportError:
+        pass
+
+    from uuid import getnode
+    mac = ':'.join(hex(getnode())[i:i + 2] for i in range(2, 12, 2)).upper()
+    return mac
 
 
 def init_sentry(
