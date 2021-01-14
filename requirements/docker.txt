@@ -2,3 +2,5 @@
 
 pelican
 markdown
+
+netifaces

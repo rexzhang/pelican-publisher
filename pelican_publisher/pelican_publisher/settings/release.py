@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-from sentry_sdk.integrations.redis import RedisIntegration
-from sentry_sdk.integrations.celery import CeleryIntegration
-from sentry_sdk.integrations.logging import LoggingIntegration
+from os import getenv
 
 from .base import *  # noqa: F401, F403
+from pelican_publisher import __version__
+from pelican_publisher.sentry import init_sentry
 
 #
 # Security
@@ -19,15 +16,24 @@ ALLOWED_HOSTS = []
 #
 # Sentry
 #
-sentry_sdk.init(
-    dsn="https://f91e39ed295d40ef9ca267abbd4b4c40@sentry.io/5182540",
-    environment='release',
+SENTRY_DSN = getenv('SENTRY_DSN', '')
+if SENTRY_DSN:
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
 
-    integrations=[
-        DjangoIntegration(), RedisIntegration(), CeleryIntegration(),
-        LoggingIntegration()
-    ],
+    init_sentry(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+            RedisIntegration(),
+            CeleryIntegration(),
+            LoggingIntegration()
+        ],
 
-    # be sure to lower this in production to prevent quota issues
-    traces_sample_rate=1.0,
-)
+        app_name='PelicanPublisher',
+        app_version=__version__,
+
+        user_id_is_mac_address=True
+    )

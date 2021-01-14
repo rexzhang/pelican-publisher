@@ -24,6 +24,7 @@ Create file ``pelican-publisher.env``
 
 - ``PELICAN_PUBLISHER_DOMAIN`` is your publisher host's domain, empty will accept any domain
 - ``PELICAN_SITES`` in JSON format, empty is ``[]``
+- ``SENTRY_DSN`` is your sentry client key (DSN)
 
 Start Service
 -------------
