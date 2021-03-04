@@ -17,5 +17,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pelican_publisher.settings')
 
 application = get_asgi_application()
 application = ASGIMiddlewareStaticFile(
-    application, static_url=settings.STATIC_URL, static_paths=[settings.STATIC_ROOT]
+    application,
+    static_url=settings.STATIC_URL, static_root_paths=[settings.STATIC_ROOT]
 )
