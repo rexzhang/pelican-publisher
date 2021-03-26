@@ -18,17 +18,17 @@ event_counter: EventCounter = dict()
 
 def auto_drop_event_for_rate_limit(event: Event, _) -> Event:
     try:
-        values = event['exception']['values'][0]
+        values = event["exception"]["values"][0]
         if not isinstance(values, dict):
             raise ValueError
 
-        key = '{}:{}:{}'.format(
-            values.get('module', 'm'),
-            values.get('type', 't'),
-            values.get('value', 'v'),
+        key = "{}:{}:{}".format(
+            values.get("module", "m"),
+            values.get("type", "t"),
+            values.get("value", "v"),
         )
     except ValueError:
-        key = 'm:t:v'
+        key = "m:t:v"
 
     # timestamp = int(datetime.utcnow().timestamp())
     timestamp = 0  # TODO unimplemented; check, take from event.get(timestamp)
@@ -48,9 +48,10 @@ def auto_drop_event_for_rate_limit(event: Event, _) -> Event:
     if event_counter[key][1] == EVENT_RATE_LIMIT_TIMES:
         # last time
         with configure_scope() as scope:
-            scope.set_tag('rate_limit', '{}@{}'.format(
-                EVENT_RATE_LIMIT_TIMES, EVENT_RATE_LIMIT_TIME_RANGE
-            ))
+            scope.set_tag(
+                "rate_limit",
+                "{}@{}".format(EVENT_RATE_LIMIT_TIMES, EVENT_RATE_LIMIT_TIME_RANGE),
+            )
         return event
 
     return event
@@ -58,23 +59,26 @@ def auto_drop_event_for_rate_limit(event: Event, _) -> Event:
 
 def get_mac_address() -> str:
     from uuid import getnode
-    mac = ':'.join(hex(getnode())[i:i + 2] for i in range(2, 14, 2)).upper()
+
+    mac = ":".join(hex(getnode())[i : i + 2] for i in range(2, 14, 2)).upper()
     return mac
 
 
 def init_sentry(
-    dsn: str, integrations: Sequence[Integration],
-    app_name: str = 'PyApp', app_version: str = '0.0.0',
+    dsn: str,
+    integrations: Sequence[Integration],
+    app_name: str = "PyApp",
+    app_version: str = "0.0.0",
     debug: bool = False,
     auto_rate_limit: bool = True,
     announce_at_startup: bool = True,
     user_id_is_mac_address: bool = False,
 ):
     if debug:
-        environment = 'debug'
+        environment = "debug"
         traces_sample_rate = 0.0
     else:
-        environment = 'release'
+        environment = "release"
         traces_sample_rate = 1.0
         auto_rate_limit = True
         announce_at_startup = True
@@ -82,15 +86,12 @@ def init_sentry(
     sentry_sdk.init(
         dsn=dsn,
         environment=environment,
-        release='{}@{}'.format(app_name, app_version),
-
+        release="{}@{}".format(app_name, app_version),
         integrations=integrations,
-
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         # We recommend adjusting this value in production,
         traces_sample_rate=traces_sample_rate,
-
         # rate limit
         before_send=auto_drop_event_for_rate_limit if auto_rate_limit else None,
     )
@@ -98,11 +99,9 @@ def init_sentry(
     mac_address = get_mac_address()
     if user_id_is_mac_address:
         with configure_scope() as scope:
-            scope.set_user({
-                'id': mac_address
-            })
+            scope.set_user({"id": mac_address})
 
     if announce_at_startup:
-        sentry_sdk.capture_exception(Exception(
-            "{} v{}@{} is up.".format(app_name, app_version, mac_address)
-        ))
+        sentry_sdk.capture_exception(
+            Exception("{} v{}@{} is up.".format(app_name, app_version, mac_address))
+        )

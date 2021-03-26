@@ -12,6 +12,6 @@ def test_task(arg1, arg2):
     return test(arg1, arg2)
 
 
-@shared_task(rate_limit='1/m')
+@shared_task(rate_limit="1/m")
 def build_pelican_site_task(site_name, request_time):
     return build_pelican_site(site_name)

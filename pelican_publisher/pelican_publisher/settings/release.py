@@ -16,7 +16,7 @@ ALLOWED_HOSTS = []
 #
 # Sentry
 #
-SENTRY_DSN = getenv('SENTRY_DSN', '')
+SENTRY_DSN = getenv("SENTRY_DSN", "")
 if SENTRY_DSN:
     from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
@@ -29,11 +29,9 @@ if SENTRY_DSN:
             DjangoIntegration(),
             RedisIntegration(),
             CeleryIntegration(),
-            LoggingIntegration()
+            LoggingIntegration(),
         ],
-
-        app_name='PelicanPublisher',
+        app_name="PelicanPublisher",
         app_version=__version__,
-
-        user_id_is_mac_address=True
+        user_id_is_mac_address=True,
     )

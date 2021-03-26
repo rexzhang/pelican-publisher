@@ -20,15 +20,14 @@ logger = getLogger(__name__)
 
 def _run_subprocess_run(cmd):
     r = subprocess.run(
-        cmd,
-        capture_output=True, encoding='utf-8', universal_newlines=True
+        cmd, capture_output=True, encoding="utf-8", universal_newlines=True
     )
     return_code = r.returncode
     output = r.stdout
-    output += '\n'
+    output += "\n"
     output += r.stderr
 
-    logger.info('returncode: {}'.format(return_code))
+    logger.info("returncode: {}".format(return_code))
     return return_code, output
 
 
@@ -41,10 +40,12 @@ def build_pelican_site(site_name):
         return
 
     # generate site
-    content_path = PurePath(site_file_path).joinpath('content')
-    settings_file = PurePath(site_file_path).joinpath('pelicanconf.py')
+    content_path = PurePath(site_file_path).joinpath("content")
+    settings_file = PurePath(site_file_path).joinpath("pelicanconf.py")
     result = _generate_site_to_local_file(
-        pelican_content_path=content_path, pelican_settings_file=settings_file, site_info=site_info
+        pelican_content_path=content_path,
+        pelican_settings_file=settings_file,
+        site_info=site_info,
     )
 
     # cleanup
@@ -60,59 +61,68 @@ def _download_and_extract_zip_from_github(site_info):
     to: /path/pelican-blog
     """
     unique_id = uuid4().hex
-    zip_file_url = site_info['ZIP_URL']
+    zip_file_url = site_info["ZIP_URL"]
 
     zip_file_name = os.path.join(
-        settings.PELICAN_PUBLISHER['WORKING_ROOT'],
-        '{}-{}.zip'.format(site_info['NAME'], unique_id)
+        settings.PELICAN_PUBLISHER["WORKING_ROOT"],
+        "{}-{}.zip".format(site_info["NAME"], unique_id),
     )
     site_stage_path = os.path.join(
-        settings.PELICAN_PUBLISHER['WORKING_ROOT'],
-        '{}-{}'.format(site_info['NAME'], unique_id)
+        settings.PELICAN_PUBLISHER["WORKING_ROOT"],
+        "{}-{}".format(site_info["NAME"], unique_id),
     )
-    logger.debug('zip file name: {}'.format(zip_file_name))
-    logger.debug('site stage path: {}'.format(site_stage_path))
+    logger.debug("zip file name: {}".format(zip_file_name))
+    logger.debug("site stage path: {}".format(site_stage_path))
 
     # download zip file
     r = requests.get(zip_file_url)
     if not r.ok:
-        logger.error('download failed')
+        logger.error("download failed")
         return None, None
 
-    open(zip_file_name, 'wb').write(r.content)
-    logger.info('download finished')
+    open(zip_file_name, "wb").write(r.content)
+    logger.info("download finished")
 
     # extract zip file
     ZipFile(zip_file_name).extractall(site_stage_path)
 
     # pelican site file check
     site_file_path = None
-    for p in Path(site_stage_path).glob('*'):
+    for p in Path(site_stage_path).glob("*"):
         if p.is_dir():
             site_file_path = p.as_posix()
             break
 
     if site_file_path is None:
-        logger.error('pelican site file extract failed, more subdir')
+        logger.error("pelican site file extract failed, more subdir")
         return None, None
 
-    logger.info('extracted pelican site file to: {}'.format(site_file_path))
+    logger.info("extracted pelican site file to: {}".format(site_file_path))
     return site_stage_path, site_file_path
 
 
-def _generate_site_to_local_file(pelican_content_path, pelican_settings_file, site_info):
+def _generate_site_to_local_file(
+    pelican_content_path, pelican_settings_file, site_info
+):
     output_path = os.path.join(
-        settings.PELICAN_PUBLISHER['OUTPUT_ROOT'], site_info['NAME']
+        settings.PELICAN_PUBLISHER["OUTPUT_ROOT"], site_info["NAME"]
     )
-    return_code, output = _run_subprocess_run([
-        'pelican', '-s', pelican_settings_file, '-o', output_path, pelican_content_path
-    ])
+    return_code, output = _run_subprocess_run(
+        [
+            "pelican",
+            "-s",
+            pelican_settings_file,
+            "-o",
+            output_path,
+            pelican_content_path,
+        ]
+    )
 
-    logger.info('build to: {} finished'.format(output_path))
+    logger.info("build to: {} finished".format(output_path))
     return output
 
 
 def test(arg1, arg2):
-    logger.info('this is test logging message')
-    return_code, output = _run_subprocess_run(['ls', '-la'])
+    logger.info("this is test logging message")
+    return_code, output = _run_subprocess_run(["ls", "-la"])
     return output
