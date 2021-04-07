@@ -1,6 +1,8 @@
 # Pelican Publisher
 
-> An automatic build/publish service for [Pelican](https://getpelican.com) website in docker
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+An automatic build/publish service for [Pelican](https://getpelican.com) website in docker
 
 ## Install
 

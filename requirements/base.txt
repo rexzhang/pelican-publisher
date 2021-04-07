@@ -1,12 +1,12 @@
-django
+django>=3.2
 requests
 
 # deploy
 uvicorn
-ASGIMiddlewareStaticFile
-sentry-sdk
+ASGIMiddlewareStaticFile>=0.3.1
+sentry-sdk>=1.0.0
 
 # task
-celery[redis]<5.0
+celery[redis]
 redis
 django-celery-results
