@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pelican Publisher</title>
-</head>
-<body>
-{% include "pp_core/_header.html" %}
-<main>
-  {% include "pp_core/_pending_task_list.html" %}
-  {% include "pp_core/_task_result_list.html" %}
-</main>
-{% include "pp_core/_footer.html" %}
-</body>
-</html>
+{% extends "pp_core/base.html" %}
+{% block content %}
+{% include "pp_core/_pending_task_list.html" %}
+{% include "pp_core/_task_result_list.html" %}
+{% endblock %}

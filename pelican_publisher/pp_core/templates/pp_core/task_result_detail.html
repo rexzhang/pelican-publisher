@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Task Results Detail | Pelican Publisher</title>
-</head>
-<body>
-
-{% include "pp_core/_header.html" %}
-
+{% extends "pp_core/base.html" %}
+{% block content %}
 <h2>Task Results Detail</h2>
 
 <h3>Summary</h3>
 <hr>
-<table>
+<table class="table table-sm table-borderless table-striped table-hover">
   <tbody>
   <tr>
     <th>task_id</th>
@@ -39,9 +31,7 @@
 
 <h3>Result</h3>
 <hr>
-<div style="white-space: pre-line">
-  {{ object.result }}
+<div class="text-justify text-monospace">
+  {{ object.result|linebreaks }}
 </div>
-{% include "pp_core/_footer.html" %}
-</body>
-</html>
+{% endblock %}
