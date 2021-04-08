@@ -1,12 +1,11 @@
 <h2>Pending Tasks</h2>
-<table class="table table-sm table-borderless table-striped table-hover">
+{% if pending_list %}
+<table class="table table-sm table-borderless table-striped table-hover text-monospace">
   <thead>
-  {% if pending_list %}
   <tr>
-    <th>task_id</th>
+    <th >task_id</th>
     <th>task_args</th>
   </tr>
-  {% endif %}
   </thead>
   <tbody>
   {% for pending in pending_list %}
@@ -17,3 +16,4 @@
   {% endfor %}
   </tbody>
 </table>
+{% endif %}

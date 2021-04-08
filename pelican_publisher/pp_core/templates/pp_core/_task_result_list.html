@@ -1,5 +1,5 @@
-<h2>Task Results(Last 10)</h2>
-<table class="table table-sm table-borderless table-striped table-hover">
+<h2>Task Results(Last 10)</h2>{% load pp_core %}
+<table class="table table-sm table-borderless table-striped table-hover text-monospace">
   <thead>
   <tr>
     <th>task_id</th>
@@ -9,14 +9,14 @@
     <th>date_done</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody >
   {% for task_result in task_result_list %}
   <tr>
-    <td><a href="{% url 'task-result-detail' task_result.task_id %}">{{ task_result.task_id }}</a></td>
+    <td ><a href="{% url 'task-result-detail' task_result.task_id %}">{{ task_result.task_id }}</a></td>
     <td>{{ task_result.status }}</td>
     <td>{{ task_result.task_args }}</td>
-    <td>{{ task_result.date_created|date:"c" }}</td>
-    <td>{{ task_result.date_done|date:"c" }}</td>
+    <td >{{ task_result.date_created|pp_date }}</td>
+    <td>{{ task_result.date_done|pp_date }}</td>
   </tr>
   {% endfor %}
   </tbody>

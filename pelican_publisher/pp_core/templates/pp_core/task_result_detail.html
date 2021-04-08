@@ -1,10 +1,10 @@
-{% extends "pp_core/base.html" %}
+{% extends "pp_core/base.html" %}{% load pp_core %}
 {% block content %}
 <h2>Task Results Detail</h2>
 
 <h3>Summary</h3>
 <hr>
-<table class="table table-sm table-borderless table-striped table-hover">
+<table class="table table-sm table-borderless table-striped table-hover text-monospace">
   <tbody>
   <tr>
     <th>task_id</th>
@@ -20,18 +20,18 @@
   </tr>
   <tr>
     <th>date_created</th>
-    <td>{{ object.date_created|date:"c" }}</td>
+    <td>{{ object.date_created|pp_date }}</td>
   </tr>
   <tr>
     <th>date_done</th>
-    <td>{{ object.date_done|date:"c" }}</td>
+    <td>{{ object.date_done|pp_date }}</td>
   </tr>
   </tbody>
 </table>
 
 <h3>Result</h3>
 <hr>
-<div class="text-justify text-monospace">
+<div class="text-monospace" >
   {{ object.result|linebreaks }}
 </div>
 {% endblock %}
