@@ -3,15 +3,16 @@
 
 
 import json
+
 from os import getenv
 from logging import getLogger
 
-from .release import *
+from .release import *  # noqa F403
 
 logger = getLogger(__name__)
 
-PELICAN_PUBLISHER["OUTPUT_ROOT"] = "/pp-output"
-DATABASES["default"]["NAME"] = "/pp-data/db.sqlite3"
+PELICAN_PUBLISHER["OUTPUT_ROOT"] = "/pp-output"  # noqa F405
+DATABASES["default"]["NAME"] = "/pp-data/db.sqlite3"  # noqa F405
 
 # import setting from env
 
@@ -21,8 +22,8 @@ if pelican_publisher_domain == "":
     # default allow any host domain
     pelican_publisher_domain = "*"
 
-ALLOWED_HOSTS.append(pelican_publisher_domain)
-logger.info("ALLOWED_HOSTS: {}".format(ALLOWED_HOSTS))
+ALLOWED_HOSTS.append(pelican_publisher_domain)  # noqa F405
+logger.info("ALLOWED_HOSTS: {}".format(ALLOWED_HOSTS))  # noqa F405
 
 # update settings.PELICAN_SITES
 pelican_sites_json_str = getenv("PELICAN_SITES", "")
