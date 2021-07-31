@@ -34,8 +34,7 @@ def main():
 
     kwargs = {
         "app": "pelican_publisher.asgi:application",
-        # TODO: ASGI 'lifespan' protocol appears unsupported. Django 3.1.x
-        # 'lifespan': 'off',
+        "lifespan": "off",  # won't fix:  https://code.djangoproject.com/ticket/31508
     }
 
     for key, arg in (
