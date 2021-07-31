@@ -1,5 +1,19 @@
 # CHANGES
 
+## 0.3.10
+
+- Update Sentry SDK
+
+## 0.3.9
+
+- Update UI
+
+## 0.3.8
+
+- Compatible ASGIMiddlewareStaticFile 0.3.x
+- Compatible Celery 5.x
+- Format with Black
+
 ## 0.3.7
 
 - Support Sentry config in Docker ENV
