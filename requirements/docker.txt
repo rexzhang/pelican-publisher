@@ -1,4 +1,6 @@
 -r base.txt
 
+supervisor
+
 pelican
 markdown
