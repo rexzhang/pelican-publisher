@@ -1,10 +1,10 @@
 FROM python:3.10-slim
 
-# ---------- for develop
-COPY deploy/debian/sources.list.txt /etc/apt/sources.list
-RUN pip config set global.index-url http://192.168.200.22:3141/root/pypi/+simple \
-    && pip config set install.trusted-host 192.168.200.22
-# ----------
+## ---------- for develop
+#COPY deploy/debian/sources.list.txt /etc/apt/sources.list
+#RUN pip config set global.index-url http://192.168.200.22:3141/root/pypi/+simple \
+#    && pip config set install.trusted-host 192.168.200.22
+## ----------
 
 COPY . /app
 COPY ./pelican_publisher/pelican_publisher/settings/docker.py /app/pelican_publisher/pelican_publisher/settings/running.py
