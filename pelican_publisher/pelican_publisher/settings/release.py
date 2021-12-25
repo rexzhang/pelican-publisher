@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding=utf-8
-
 from os import getenv
 
 from .base import *  # noqa: F401, F403
