@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_results",
-    "bootstrap4",
+    "django_bootstrap5",
     "pp_core",
     "pp_webhook",
 ]
@@ -128,8 +128,6 @@ PELICAN_SITES = [
 # django-bootstrap4
 
 BOOTSTRAP4 = {
-    "css_url": {"href": "/static/css/bootstrap-4.5.3.min.css"},
-    "javascript_url": {"url": "/static/js/bootstrap-4.5.3.min.js"},
-    "jquery_url": {"url": "/static/js/jquery-3.5.0.min.js"},
-    "popper_url": {"url": "/static/js/popper-1.16.0.min.js"},
+    "css_url": {"url": "/static/css/bootstrap-5.1.3.min.css"},
+    "javascript_url": {"url": "/static/js/bootstrap.bundle-5.1.3.min.js"},
 }
