@@ -1,9 +1,9 @@
 FROM python:3.10-alpine
 
 ## ---------- for develop
-#RUN pip config set global.index-url http://192.168.200.22:3141/root/pypi/+simple \
-#    && pip config set install.trusted-host 192.168.200.22 \
-#    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+RUN pip config set global.index-url http://192.168.200.22:3141/root/pypi/+simple \
+    && pip config set install.trusted-host 192.168.200.22 \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 ## ----------
 
 COPY . /app
@@ -11,7 +11,7 @@ COPY pelican_publisher/pelican_publisher/settings/docker.py /app/pelican_publish
 COPY docker_cmd.sh /app/pelican_publisher
 
 RUN mkdir -p /etc/supervisor.d
-COPY deploy/supervisor/conf.d/* /etc/supervisor.d
+COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d
 
 RUN pip install --no-cache-dir -r /app/requirements/docker.txt \
     && apk add --no-cache redis supervisor \
