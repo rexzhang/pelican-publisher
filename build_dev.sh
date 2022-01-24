@@ -1,6 +1,6 @@
 docker container stop pelican-publisher
 docker container rm pelican-publisher
-docker image rm pelican-publisher
+docker image rm ray1ex/pelican-publisher
 
 docker build -t ray1ex/pelican-publisher .
 docker image prune -f
