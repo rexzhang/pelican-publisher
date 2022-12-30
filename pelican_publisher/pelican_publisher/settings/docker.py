@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding=utf-8
 
 
 import json
@@ -23,7 +22,7 @@ if pelican_publisher_domain == "":
     pelican_publisher_domain = "*"
 
 ALLOWED_HOSTS.append(pelican_publisher_domain)  # noqa F405
-logger.info("ALLOWED_HOSTS: {}".format(ALLOWED_HOSTS))  # noqa F405
+logger.info(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")  # noqa F405
 
 # update settings.PELICAN_SITES
 pelican_sites_json_str = getenv("PELICAN_SITES", "")

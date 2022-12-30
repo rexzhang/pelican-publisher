@@ -1,5 +1,7 @@
 # CHANGES
 
+- 不再依赖 celery+redis
+
 ## 0.3.10
 
 - Update Sentry SDK

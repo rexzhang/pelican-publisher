@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding=utf-8
 
 
 import hmac
@@ -89,5 +88,5 @@ def github_webhook(request, site_name):
         return HttpResponse("success")
 
     # In case we receive an event that's not ping or push or other support event
-    logger.warning("can not support event: {}".format(event))
-    return HttpResponse("Can not support event: {}".format(event), status=204)
+    logger.warning(f"can not support event: {event}")
+    return HttpResponse(f"Can not support event: {event}", status=204)

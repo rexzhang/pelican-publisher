@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding=utf-8
 
 
 import os.path
@@ -20,14 +19,14 @@ logger = getLogger(__name__)
 
 def _run_subprocess_run(cmd):
     r = subprocess.run(
-        cmd, capture_output=True, encoding="utf-8", universal_newlines=True
+        cmd, capture_output=True, encoding="utf-8", text=True
     )
     return_code = r.returncode
     output = r.stdout
     output += "\n"
     output += r.stderr
 
-    logger.info("returncode: {}".format(return_code))
+    logger.info(f"returncode: {return_code}")
     return return_code, output
 
 
@@ -71,8 +70,8 @@ def _download_and_extract_zip_from_github(site_info):
         settings.PELICAN_PUBLISHER["WORKING_ROOT"],
         "{}-{}".format(site_info["NAME"], unique_id),
     )
-    logger.debug("zip file name: {}".format(zip_file_name))
-    logger.debug("site stage path: {}".format(site_stage_path))
+    logger.debug(f"zip file name: {zip_file_name}")
+    logger.debug(f"site stage path: {site_stage_path}")
 
     # download zip file
     r = requests.get(zip_file_url)
@@ -97,7 +96,7 @@ def _download_and_extract_zip_from_github(site_info):
         logger.error("pelican site file extract failed, more subdir")
         return None, None
 
-    logger.info("extracted pelican site file to: {}".format(site_file_path))
+    logger.info(f"extracted pelican site file to: {site_file_path}")
     return site_stage_path, site_file_path
 
 
@@ -118,7 +117,7 @@ def _generate_site_to_local_file(
         ]
     )
 
-    logger.info("build to: {} finished".format(output_path))
+    logger.info(f"build to: {output_path} finished")
     return output
 
 

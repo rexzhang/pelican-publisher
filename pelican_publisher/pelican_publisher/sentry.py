@@ -2,7 +2,8 @@
 https://gist.github.com/rexzhang/74936b88e43b928149af4237d70c3fde
 """
 
-from typing import Optional, Any, Dict, List, Sequence
+from typing import Optional, Any, Dict, List
+from collections.abc import Sequence
 
 import sentry_sdk
 from sentry_sdk import configure_scope
@@ -11,8 +12,8 @@ from sentry_sdk.integrations import Integration
 EVENT_RATE_LIMIT_TIME_RANGE = 60 * 60  # one hour
 EVENT_RATE_LIMIT_TIMES = 10  # 10 times
 
-Event = Optional[Dict[str, Any]]
-EventCounter = Dict[str, List[int]]  # { key: [timestamp, count] }
+Event = Optional[dict[str, Any]]
+EventCounter = dict[str, list[int]]  # { key: [timestamp, count] }
 event_counter: EventCounter = dict()
 
 
@@ -50,7 +51,7 @@ def auto_drop_event_for_rate_limit(event: Event, _) -> Event:
         with configure_scope() as scope:
             scope.set_tag(
                 "rate_limit",
-                "{}@{}".format(EVENT_RATE_LIMIT_TIMES, EVENT_RATE_LIMIT_TIME_RANGE),
+                f"{EVENT_RATE_LIMIT_TIMES}@{EVENT_RATE_LIMIT_TIME_RANGE}",
             )
         return event
 
@@ -86,7 +87,7 @@ def init_sentry(
     sentry_sdk.init(
         dsn=dsn,
         environment=environment,
-        release="{}@{}".format(app_name, app_version),
+        release=f"{app_name}@{app_version}",
         integrations=integrations,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
@@ -103,5 +104,5 @@ def init_sentry(
 
     if announce_at_startup:
         sentry_sdk.capture_exception(
-            Exception("{} v{}@{} is up.".format(app_name, app_version, mac_address))
+            Exception(f"{app_name} v{app_version}@{mac_address} is up.")
         )
