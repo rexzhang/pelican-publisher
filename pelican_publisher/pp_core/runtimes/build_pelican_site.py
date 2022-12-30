@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 import os.path
 import subprocess
 from logging import getLogger
@@ -18,9 +15,7 @@ logger = getLogger(__name__)
 
 
 def _run_subprocess_run(cmd):
-    r = subprocess.run(
-        cmd, capture_output=True, encoding="utf-8", text=True
-    )
+    r = subprocess.run(cmd, capture_output=True, encoding="utf-8", text=True)
     return_code = r.returncode
     output = r.stdout
     output += "\n"

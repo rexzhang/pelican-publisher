@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-
-
-from typing import Union
-
 from django.conf import settings
 
 

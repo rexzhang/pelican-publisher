@@ -2,7 +2,7 @@
 https://gist.github.com/rexzhang/74936b88e43b928149af4237d70c3fde
 """
 
-from typing import Optional, Any, Dict, List
+from typing import Optional, Any
 from collections.abc import Sequence
 
 import sentry_sdk
