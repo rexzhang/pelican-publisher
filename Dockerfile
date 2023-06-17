@@ -1,32 +1,46 @@
 FROM python:3.11-alpine
 
 ARG ENV
-RUN if [ "$ENV" = "debug" ]; then echo "Change depends" \
-    && pip config set global.index-url http://192.168.200.61:13141/root/pypi/+simple \
-    && pip config set install.trusted-host 192.168.200.61 \
-    # && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+ENV TZ="Asia/Shanghai"
+
+RUN if [ "$ENV" = "rex" ]; then echo "Change depends" \
+    && pip config set global.index-url http://192.168.200.26:13141/root/pypi/+simple \
+    && pip config set install.trusted-host 192.168.200.26 \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
     ; fi
 
-COPY pelican_publisher /app
-COPY pelican_publisher/pelican_publisher/settings/docker.py /app/pelican_publisher/settings/running.py
+COPY pelican_publisher /app/pelican_publisher
+COPY pp_core /app/pp_core
+COPY pp_webhook /app/pp_webhook
 COPY requirements /app/requirements
-COPY deploy/docker/entrypoint.sh /app
+COPY manage.py /app/manage.py
+COPY runserver.py /app/runserver.py
 
-RUN mkdir -p /etc/supervisor.d
-COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d
+COPY deploy/docker/entrypoint.sh /app/entrypoint.sh
+COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d/
 
-RUN pip install --no-cache-dir -r /app/requirements/docker.txt \
+RUN \
+    # py ---
+    pip install --no-cache-dir -r /app/requirements/docker.txt \
+    # supervisor
     && apk add --no-cache redis supervisor \
-    && mkdir /var/log/supervisor \
-    && mkdir /pp-output \
-    && mkdir /pp-data
+    # cleanup --- \
+    && rm -rf /root/.cache \
+    && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \
+    && find /usr/local/lib/python*/ -type d -name "__pycache__" -delete \
+    # prepare django ---
+    && mv /app/pelican_publisher/settings/docker.py /app/pelican_publisher/settings/running.py \
+    # prepare path ---
+    && mkdir /data \
+    && mkdir /output \
+    && mkdir /log
 
 EXPOSE 8000
-VOLUME /pp-output
-VOLUME /pp-data
-WORKDIR /app
+VOLUME /data
+VOLUME /output
+VOLUME /log
 
+WORKDIR /app
 RUN ./manage.py collectstatic --no-input
 
 # TODO: nobody

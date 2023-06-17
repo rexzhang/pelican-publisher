@@ -10,8 +10,8 @@ from .release import *  # noqa F403
 
 logger = getLogger(__name__)
 
-PELICAN_PUBLISHER["OUTPUT_ROOT"] = "/pp-output"  # noqa F405
-DATABASES["default"]["NAME"] = "/pp-data/db.sqlite3"  # noqa F405
+PELICAN_PUBLISHER["OUTPUT_ROOT"] = "/output"  # noqa F405
+DATABASES["default"]["NAME"] = "/data/db.sqlite3"  # noqa F405
 
 # import setting from env
 

@@ -19,19 +19,21 @@ PELICAN_PUBLISHER_DOMAIN=pelican-publisher.rexzhang.com
 PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rexzhang.com/archive/master.zip","WEBHOOK_SECRET":"please-change-it-!"},{"NAME":"sample.com","ZIP_URL":"https://sample.com/master.zip","WEBHOOK_SECRET":"secret"}]
 ```
 
--   `PELICAN_PUBLISHER_DOMAIN` is your publisher host's domain, empty
-    will accept any domain
--   `PELICAN_SITES` in JSON format, empty is `[]`
--   `SENTRY_DSN` is your sentry client key (DSN)
+- `PELICAN_PUBLISHER_DOMAIN` is your publisher host's domain, empty will accept any domain
+- `PELICAN_SITES` in JSON format, empty is `[]`
+- `SENTRY_DSN` is your sentry client key (DSN)
 
 ## Start Service
 
 ``` 
-docker run -dit -p 127.0.0.1:8000:8000 -v=/var/www/pp-output:/pp-output -v=/var/www/pp-data:/pp-data --env-file pelican-publisher.env --restart unless-stopped --name pelican-publisher ray1ex/pelican-publisher
+docker run -dit -p 127.0.0.1:8000:8000 --restart unless-stopped \
+  -v=/var/www:/output -v=$(pwd)/data:/data \
+  --env-file pelican-publisher.env \
+  --name pelican-publisher ray1ex/pelican-publisher
 ```
 
--   Your site will output to path `/var/www/pp-output/SITE_NAME`
--   Your database file db.sqlite3 will at `/var/www/pp-data/db.sqlite3`
+-   Your site will output to path `/var/www/SITE_NAME`
+-   Your database file db.sqlite3 will at `$(pwd)/data/db.sqlite3`
 
 ## Setup Webhook
 

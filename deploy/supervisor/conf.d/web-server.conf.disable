@@ -4,4 +4,4 @@ directory = /app/pelican_publisher
 command = daphne pelican_publisher.asgi:application -b 0.0.0.0
 
 redirect_stderr = true
-stdout_logfile = /var/log/web-server.log
+stdout_logfile = log/web-server.log
