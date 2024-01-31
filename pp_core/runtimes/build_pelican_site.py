@@ -1,7 +1,7 @@
 import os.path
 import subprocess
 from logging import getLogger
-from pathlib import PurePath, Path
+from pathlib import Path, PurePath
 from shutil import rmtree
 from uuid import uuid4
 from zipfile import ZipFile

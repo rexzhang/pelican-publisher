@@ -2,9 +2,8 @@
 
 
 import json
-
-from os import getenv
 from logging import getLogger
+from os import getenv
 
 from .release import *  # noqa F403
 

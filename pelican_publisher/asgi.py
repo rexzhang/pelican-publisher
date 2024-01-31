@@ -10,9 +10,9 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 import os
 from os import getenv
 
+from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 from django.conf import settings
 from django.core.asgi import get_asgi_application
-from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pelican_publisher.settings")
 

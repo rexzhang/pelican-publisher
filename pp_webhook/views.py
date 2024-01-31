@@ -2,21 +2,21 @@
 
 
 import hmac
-from hashlib import sha1
 from datetime import datetime
+from hashlib import sha1
+from ipaddress import ip_address, ip_network
 from logging import getLogger
 
+import requests
 from django.http import (
     HttpResponse,
     HttpResponseForbidden,
-    HttpResponseServerError,
     HttpResponseRedirect,
+    HttpResponseServerError,
 )
+from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.encoding import force_bytes
-import requests
-from ipaddress import ip_address, ip_network
 
 from pp_core.runtimes.common import get_site_info_by_name
 from pp_core.tasks import build_pelican_site_task

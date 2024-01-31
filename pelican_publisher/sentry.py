@@ -2,8 +2,8 @@
 https://gist.github.com/rexzhang/74936b88e43b928149af4237d70c3fde
 """
 
-from typing import Optional, Any
 from collections.abc import Sequence
+from typing import Any, Optional
 
 import sentry_sdk
 from sentry_sdk import configure_scope

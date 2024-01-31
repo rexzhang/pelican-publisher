@@ -1,8 +1,9 @@
 from os import getenv
 
-from .base import *  # noqa: F401, F403
 from pelican_publisher import __version__
 from pelican_publisher.sentry import init_sentry
+
+from .base import *  # noqa: F401, F403
 
 #
 # Security
@@ -15,10 +16,10 @@ ALLOWED_HOSTS = []
 #
 SENTRY_DSN = getenv("SENTRY_DSN", "")
 if SENTRY_DSN:
-    from sentry_sdk.integrations.django import DjangoIntegration
-    from sentry_sdk.integrations.redis import RedisIntegration
     from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.logging import LoggingIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
 
     init_sentry(
         dsn=SENTRY_DSN,

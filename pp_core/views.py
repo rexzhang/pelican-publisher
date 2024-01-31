@@ -1,13 +1,12 @@
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import (
-    TemplateView as DjangoTemplateView,
-    DetailView as DjangoDetailView,
-)
+from django.views.generic import DetailView as DjangoDetailView
+from django.views.generic import TemplateView as DjangoTemplateView
 from django_celery_results.models import TaskResult
 
 import pelican_publisher
+
 from .runtimes.celery import get_pending_task_list
 from .tasks import test_task
 

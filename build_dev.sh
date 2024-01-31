@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-docker pull python:3.11-alpine
+docker pull python:3.12-alpine
 docker build -t ray1ex/pelican-publisher . --build-arg ENV=rex
 
 read -r -s -k '?Press any key to continue. startup container...'
