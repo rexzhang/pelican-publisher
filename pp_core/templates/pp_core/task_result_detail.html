@@ -1,37 +1,34 @@
-{% extends "pp_core/base.html" %}{% load pp_core %}
-{% block content %}
-<h2>Task Results Detail</h2>
+{% extends 'pp_core/base.html' %} {% load pp_core %} {% block content %}
+  <h2 class="p-4">Task Results Detail</h2>
 
-<h3>Summary</h3>
-<hr>
-<table class="table table-sm table-borderless table-striped table-hover text-monospace">
-  <tbody>
-  <tr>
-    <th>task_id</th>
-    <td>{{ object.task_id }}</td>
-  </tr>
-  <tr>
-    <th>task_args</th>
-    <td>{{ object.task_args }}</td>
-  </tr>
-  <tr>
-    <th>status</th>
-    <td>{{ object.status }}</td>
-  </tr>
-  <tr>
-    <th>date_created</th>
-    <td>{{ object.date_created|pp_date }}</td>
-  </tr>
-  <tr>
-    <th>date_done</th>
-    <td>{{ object.date_done|pp_date }}</td>
-  </tr>
-  </tbody>
-</table>
+  <h2 class="p-4 pb-0.5 border-b border-gray-500">Summary</h2>
+  <table class="table table-zebra">
+    <tbody>
+      <tr>
+        <th>task_id</th>
+        <td>{{ object.task_id }}</td>
+      </tr>
+      <tr>
+        <th>task_args</th>
+        <td>{{ object.task_args }}</td>
+      </tr>
+      <tr>
+        <th>status</th>
+        <td>{{ object.status }}</td>
+      </tr>
+      <tr>
+        <th>date_created</th>
+        <td>{{ object.date_created|pp_date }}</td>
+      </tr>
+      <tr>
+        <th>date_done</th>
+        <td>{{ object.date_done|pp_date }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-<h3>Result</h3>
-<hr>
-<div class="text-monospace" >
-  {{ object.result|linebreaks }}
-</div>
+  <h2 class="p-4 pb-0.5">Result</h2>
+  <div class="px-4 border border-gray-500">
+    <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
+  </div>
 {% endblock %}

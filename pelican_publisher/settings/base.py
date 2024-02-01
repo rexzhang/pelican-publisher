@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 from pathlib import Path
+from uuid import uuid4
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ")b(hh68bjx9tfzh--y09mnhy%&t*a-yx%c1p((7spvdjinp_=a"
+SECRET_KEY = uuid4().hex
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_results",
-    "django_bootstrap5",
+    "tailwind",
     "pp_core",
     "pp_webhook",
 ]
@@ -123,10 +124,3 @@ PELICAN_SITES = [
         "WEBHOOK_SECRET": "please-change-it-!",
     },
 ]
-
-# django-bootstrap4
-
-BOOTSTRAP4 = {
-    "css_url": {"url": "/static/css/bootstrap-5.1.3.min.css"},
-    "javascript_url": {"url": "/static/js/bootstrap.bundle-5.1.3.min.js"},
-}

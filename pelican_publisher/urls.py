@@ -35,4 +35,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns.append(path("test/", view=views.TestView.as_view(), name="test"))
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+        path("test/", view=views.TestView.as_view(), name="test"),
+    ]

@@ -1,19 +1,19 @@
-<h2>Pending Tasks</h2>
-{% if pending_list %}
-<table class="table table-sm table-borderless table-striped table-hover text-monospace">
-  <thead>
-  <tr>
-    <th >task_id</th>
-    <th>task_args</th>
-  </tr>
-  </thead>
-  <tbody>
-  {% for pending in pending_list %}
-  <tr>
-    <td>{{ pending.id }}</td>
-    <td>{{ pending.info }}</td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
-{% endif %}
+<h2 class="p-4">Pending Tasks</h2>
+<div class="overflow-x-auto">
+  <table class="table table-zebra table-pin-rows">
+    <thead>
+      <tr>
+        <th>task_id</th>
+        <th>task_args</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pending in pending_list %}
+        <tr>
+          <td>{{ pending.id }}</td>
+          <td>{{ pending.info }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

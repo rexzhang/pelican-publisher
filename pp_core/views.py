@@ -55,8 +55,10 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pending_list = get_pending_task_list()
+        if len(pending_list) > 0:
+            context["pending_list"] = pending_list
 
-        context["pending_list"] = get_pending_task_list()
         context["task_result_list"] = TaskResult.objects.all()[:10]
         return context
 
