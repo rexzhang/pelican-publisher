@@ -1,6 +1,32 @@
 # CHANGES
 
-- 不再依赖 celery+redis
+## 0.5.0
+
+- Update python to 3.12
+- Update, use tailwind replace bootstrap
+- Update, use django-toosimple-q replace celery
+- Remove redis
+
+## 0.4.3
+
+- Refactor, new file layout
+
+## 0.4.2
+
+- Upgrade python to 3.11
+
+## 0.4.1
+
+-Fix bug
+
+## 0.4.0
+
+- Upgrade bootstrap to v5
+- Change docker base image to alpine
+
+## 0.3.11
+
+- Docker image thinning
 
 ## 0.3.10
 
