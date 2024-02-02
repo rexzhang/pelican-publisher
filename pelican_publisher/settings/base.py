@@ -100,12 +100,6 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
 
-# Celery
-# http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
-
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-
 # Pelican Publisher
 PELICAN_PUBLISHER = {
     "WORKING_ROOT": "/tmp",
