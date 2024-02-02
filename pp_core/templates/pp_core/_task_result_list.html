@@ -4,23 +4,23 @@
   <table class="table table-zebra table-pin-rows">
     <thead>
       <tr>
-        <th>task_id</th>
-        <th>status</th>
-        <th>task_args</th>
-        <th>date_created</th>
-        <th>date_done</th>
+        <th>id</th>
+        <th>state</th>
+        <th>args</th>
+        <th>created</th>
+        <th>finished</th>
       </tr>
     </thead>
     <tbody>
-      {% for task_result in task_result_list %}
+      {% for task in finished_task_list %}
         <tr>
           <td>
-            <a href="{% url 'task-result-detail' task_result.task_id %}">{{ task_result.task_id }}</a>
+            <a href="{% url 'task-detail' task.id %}">{{ task.id }}</a>
           </td>
-          <td>{{ task_result.status }}</td>
-          <td>{{ task_result.task_args }}</td>
-          <td>{{ task_result.date_created|pp_date }}</td>
-          <td>{{ task_result.date_done|pp_date }}</td>
+          <td>{{ task.state }}</td>
+          <td>{{ task.args }}</td>
+          <td>{{ task.created|pp_date }}</td>
+          <td>{{ task.finished|pp_date }}</td>
         </tr>
       {% endfor %}
     </tbody>

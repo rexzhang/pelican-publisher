@@ -25,9 +25,9 @@ from pp_core import views
 urlpatterns = [
     path("", view=views.HomeView.as_view(), name="home"),
     path(
-        "task_result/<pk>/",
-        views.TaskResultDetailView.as_view(),
-        name="task-result-detail",
+        "task/<pk>/",
+        views.TaskDetailView.as_view(),
+        name="task-detail",
     ),
     path(
         "webhook/", include(("pp_webhook.urls", "pp_webhook"), namespace="pp-webhook")

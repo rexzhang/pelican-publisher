@@ -3,11 +3,11 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView as DjangoDetailView
 from django.views.generic import TemplateView as DjangoTemplateView
-from django_celery_results.models import TaskResult
+from django_toosimple_q.models import TaskExec
 
 import pelican_publisher
 
-from .runtimes.celery import get_pending_task_list
+from .runtimes.django_toosimple_q import get_finished_task_list, get_pending_task_list
 from .tasks import test_task
 
 
@@ -46,7 +46,7 @@ class TestView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        test_task.delay(1, 2)
+        test_task.queue(1, 2)
         return context
 
 
@@ -55,25 +55,24 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_list = get_pending_task_list()
-        if len(pending_list) > 0:
-            context["pending_list"] = pending_list
+        pending_task_list = get_pending_task_list()
+        if len(pending_task_list) > 0:
+            context["pending_task_list"] = pending_task_list
 
-        context["task_result_list"] = TaskResult.objects.all()[:10]
+        context["finished_task_list"] = get_finished_task_list()
         return context
 
 
-class TaskResultDetailView(DetailView):
-    model = TaskResult
-    template_name = "pp_core/task_result_detail.html"
+class TaskDetailView(DetailView):
+    model = TaskExec
+    template_name = "pp_core/task_detail.html"
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get(self.pk_url_kwarg)
-        obj = self.model.objects.filter(task_id=pk).first()
+        obj = self.model.objects.filter(id=pk).first()
         if obj is None:
             raise ObjectDoesNotExist("incorrect task id")
 
-        obj.result = json.loads(obj.result)
         return obj
 
     def get_context_data(self, **kwargs):

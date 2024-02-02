@@ -20,10 +20,10 @@ COPY deploy/docker/entrypoint.sh /app/entrypoint.sh
 COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d/
 
 RUN \
-    # py ---
-    pip install --no-cache-dir -r /app/requirements/docker.txt \
     # supervisor
-    && apk add --no-cache redis supervisor \
+    apk add --no-cache supervisor \
+    # python depends
+    && pip install --no-cache-dir -r /app/requirements/docker.txt \
     # cleanup --- \
     && rm -rf /root/.cache \
     && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \

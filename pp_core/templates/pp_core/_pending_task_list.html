@@ -1,17 +1,18 @@
+{% load pp_core %}
 <h2 class="p-4">Pending Tasks</h2>
 <div class="overflow-x-auto">
   <table class="table table-zebra table-pin-rows">
     <thead>
       <tr>
-        <th>task_id</th>
-        <th>task_args</th>
+        <th>id</th>
+        <th>created</th>
       </tr>
     </thead>
     <tbody>
-      {% for pending in pending_list %}
+      {% for task in pending_task_list %}
         <tr>
-          <td>{{ pending.id }}</td>
-          <td>{{ pending.info }}</td>
+          <td>{{ task.id }}</td>
+          <td>{{ task.created|pp_date }}</td>
         </tr>
       {% endfor %}
     </tbody>

@@ -5,27 +5,31 @@
   <table class="table table-zebra">
     <tbody>
       <tr>
-        <th>task_id</th>
-        <td>{{ object.task_id }}</td>
+        <th>id</th>
+        <td>{{ object.id }}</td>
       </tr>
       <tr>
-        <th>task_args</th>
-        <td>{{ object.task_args }}</td>
+        <th>args</th>
+        <td>{{ object.args }}</td>
       </tr>
       <tr>
         <th>status</th>
-        <td>{{ object.status }}</td>
+        <td>{{ object.state }}</td>
       </tr>
       <tr>
-        <th>date_created</th>
-        <td>{{ object.date_created|pp_date }}</td>
+        <th>created</th>
+        <td>{{ object.created|pp_date }}</td>
+      </tr> <tr>
+        <th>started</th>
+        <td>{{ object.started|pp_date }}</td>
       </tr>
       <tr>
-        <th>date_done</th>
-        <td>{{ object.date_done|pp_date }}</td>
+        <th>finished</th>
+        <td>{{ object.finished|pp_date }}</td>
       </tr>
     </tbody>
   </table>
+  {{ object.get_ }}
 
   <h2 class="p-4 pb-0.5">Result</h2>
   <div class="px-4 border border-gray-500">
