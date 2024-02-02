@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 from django_toosimple_q.decorators import register_task
 
 from .runtimes.build_pelican_site import build_pelican_site, test

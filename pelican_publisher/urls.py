@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 """pelican_publisher URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -20,22 +17,25 @@ Including another URLconf
 from django.conf import settings
 from django.urls import include, path
 
-from pp_core import views
+from pp_core.views import task, web_hook
 
 urlpatterns = [
-    path("", view=views.HomeView.as_view(), name="home"),
+    path("", view=task.HomeView.as_view(), name="home"),
     path(
-        "task/<pk>/",
-        views.TaskDetailView.as_view(),
+        "task/<int:pk>/",
+        task.TaskDetailView.as_view(),
         name="task-detail",
     ),
     path(
-        "webhook/", include(("pp_webhook.urls", "pp_webhook"), namespace="pp-webhook")
+        "webhook/github/<str:site_name>",
+        view=web_hook.github_webhook,
+        name="web-hook-github",
     ),
 ]
 
 if settings.DEBUG:
     urlpatterns += [
         path("__reload__/", include("django_browser_reload.urls")),
-        path("test/", view=views.TestView.as_view(), name="test"),
+        path("task/test", view=task.TestView.as_view(), name="task-test"),
+        path("webhook/test", web_hook.test, name="web-hook-test"),
     ]

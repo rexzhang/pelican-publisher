@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 """
 Django settings for pelican_publisher project.
 
@@ -42,7 +39,6 @@ INSTALLED_APPS = [
     "django_toosimple_q",
     "tailwind",
     "pp_core",
-    "pp_webhook",
 ]
 
 MIDDLEWARE = [

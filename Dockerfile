@@ -11,7 +11,6 @@ RUN if [ "$ENV" = "rex" ]; then echo "Change depends" \
 
 COPY pelican_publisher /app/pelican_publisher
 COPY pp_core /app/pp_core
-COPY pp_webhook /app/pp_webhook
 COPY requirements /app/requirements
 COPY manage.py /app/manage.py
 COPY runserver.py /app/runserver.py

@@ -1,14 +1,14 @@
-import json
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView as DjangoDetailView
 from django.views.generic import TemplateView as DjangoTemplateView
 from django_toosimple_q.models import TaskExec
 
 import pelican_publisher
-
-from .runtimes.django_toosimple_q import get_finished_task_list, get_pending_task_list
-from .tasks import test_task
+from pp_core.runtimes.django_toosimple_q import (
+    get_finished_task_list,
+    get_pending_task_list,
+)
+from pp_core.tasks import test_task
 
 
 class ViewMixin:
@@ -41,7 +41,7 @@ class DetailView(ViewMixin, DjangoDetailView):
 
 
 class TestView(TemplateView):
-    template_name = "pp_core/home.html"
+    template_name = "pp_core/task/home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +51,7 @@ class TestView(TemplateView):
 
 
 class HomeView(TemplateView):
-    template_name = "pp_core/home.html"
+    template_name = "pp_core/task/home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,7 +65,7 @@ class HomeView(TemplateView):
 
 class TaskDetailView(DetailView):
     model = TaskExec
-    template_name = "pp_core/task_detail.html"
+    template_name = "pp_core/task/detail.html"
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get(self.pk_url_kwarg)
