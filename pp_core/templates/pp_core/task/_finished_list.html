@@ -5,6 +5,7 @@
     <thead>
       <tr>
         <th>id</th>
+        <th>site name</th>
         <th>state</th>
         <th>created</th>
         <th>started</th>
@@ -16,6 +17,9 @@
         <tr>
           <td>
             <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.id }}</a>
+          </td>
+          <td>
+            <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.args|first }}</a>
           </td>
           <td>
             <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.state }}</a>
