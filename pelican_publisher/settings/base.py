@@ -10,8 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import json
+from os import getenv
 from pathlib import Path
 from uuid import uuid4
+
+from pelican_publisher import __version__
+from pelican_publisher.sentry import init_sentry
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent.parent
@@ -26,14 +31,17 @@ SECRET_KEY = uuid4().hex
 DEBUG = True
 
 ALLOWED_HOSTS = []
+pelican_publisher_domain = getenv("PELICAN_PUBLISHER_DOMAIN", "")
+if len(pelican_publisher_domain) > 0:
+    ALLOWED_HOSTS.append(pelican_publisher_domain)
 
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
+    # "django.contrib.admin",
+    # "django.contrib.auth",
+    # "django.contrib.contenttypes",
+    # "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_toosimple_q",
@@ -46,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -62,7 +70,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
-                # 'django.contrib.auth.context_processors.auth',
+                # "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -100,6 +108,23 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
 
+#
+# Sentry
+#
+SENTRY_DSN = getenv("SENTRY_DSN", "")
+if SENTRY_DSN:
+    from sentry_sdk.integrations.asyncio import AsyncioIntegration
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
+
+    init_sentry(
+        dsn=SENTRY_DSN,
+        integrations=[AsyncioIntegration(), DjangoIntegration(), LoggingIntegration()],
+        app_name="PelicanPublisher",
+        app_version=__version__,
+        user_id_is_mac_address=True,
+    )
+
 # Pelican Publisher
 PELICAN_PUBLISHER = {
     "WORKING_ROOT": "/tmp",
@@ -114,3 +139,16 @@ PELICAN_SITES = [
         "WEBHOOK_SECRET": "please-change-it-!",
     },
 ]
+
+pelican_sites_json_str = getenv("PELICAN_SITES", "")
+if pelican_sites_json_str != "":
+    try:
+        pelican_sites = json.loads(pelican_sites_json_str)
+        for pelican_site_info in pelican_sites:
+            if set(pelican_site_info.keys()) < {"NAME", "ZIP_URL", "WEBHOOK_SECRET"}:
+                raise ValueError
+
+        PELICAN_SITES = pelican_sites
+
+    except ValueError:
+        raise Exception("env PELICAN_SITES incorrect")
