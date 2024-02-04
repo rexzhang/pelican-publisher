@@ -25,7 +25,7 @@ logger = getLogger(__name__)
 
 
 def test(request):
-    build_pelican_site_task.delay("rexzhang.com", datetime.now())
+    build_pelican_site_task.queue("rexzhang.com", datetime.now())
     return HttpResponse("build_pelican_site_task started")
 
 
@@ -83,7 +83,7 @@ def github_webhook(request, site_name):
     elif event == "push":
         # Deploy some code for example
         logger.debug(request.body)
-        build_pelican_site_task.delay(site_name, datetime.now())
+        build_pelican_site_task.queue(site_name, datetime.now())
         logger.info("webhook request process finished")
         return HttpResponse("success")
 

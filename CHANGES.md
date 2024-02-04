@@ -1,5 +1,13 @@
 # CHANGES
 
+## 0.5.2 - 20240204
+
+- Fix bug
+
+## 0.5.1 - 20240202
+
+- Fix centry config
+
 ## 0.5.0
 
 - Update python to 3.12
