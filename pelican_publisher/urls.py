@@ -37,7 +37,12 @@ if settings.DEBUG:
     # from django.contrib import admin
     urlpatterns += [
         # path("admin/", admin.site.urls),
-        path("__reload__/", include("django_browser_reload.urls")),
         path("task/test", view=task.TestView.as_view(), name="task-test"),
         path("webhook/test", web_hook.test, name="web-hook-test"),
     ]
+
+if settings.PELICAN_PUBLISHER_PREFIX:
+    urlpatterns = [path(settings.PELICAN_PUBLISHER_PREFIX, include(urlpatterns))]
+
+if settings.DEBUG:
+    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]

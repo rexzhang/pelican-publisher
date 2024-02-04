@@ -31,9 +31,6 @@ SECRET_KEY = uuid4().hex
 DEBUG = True
 
 ALLOWED_HOSTS = []
-pelican_publisher_domain = getenv("PELICAN_PUBLISHER_DOMAIN", "")
-if len(pelican_publisher_domain) > 0:
-    ALLOWED_HOSTS.append(pelican_publisher_domain)
 
 # Application definition
 
@@ -108,23 +105,6 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
 
-#
-# Sentry
-#
-SENTRY_DSN = getenv("SENTRY_DSN", "")
-if SENTRY_DSN:
-    from sentry_sdk.integrations.asyncio import AsyncioIntegration
-    from sentry_sdk.integrations.django import DjangoIntegration
-    from sentry_sdk.integrations.logging import LoggingIntegration
-
-    init_sentry(
-        dsn=SENTRY_DSN,
-        integrations=[AsyncioIntegration(), DjangoIntegration(), LoggingIntegration()],
-        app_name="PelicanPublisher",
-        app_version=__version__,
-        user_id_is_mac_address=True,
-    )
-
 # Pelican Publisher
 PELICAN_PUBLISHER = {
     "WORKING_ROOT": "/tmp",
@@ -140,10 +120,35 @@ PELICAN_SITES = [
     },
 ]
 
-pelican_sites_json_str = getenv("PELICAN_SITES", "")
-if pelican_sites_json_str != "":
+# Sentry
+SENTRY_DSN = getenv("SENTRY_DSN", "")
+if SENTRY_DSN:
+    from sentry_sdk.integrations.asyncio import AsyncioIntegration
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
+
+    init_sentry(
+        dsn=SENTRY_DSN,
+        integrations=[AsyncioIntegration(), DjangoIntegration(), LoggingIntegration()],
+        app_name="PelicanPublisher",
+        app_version=__version__,
+        user_id_is_mac_address=True,
+    )
+
+# Parse Env
+env_data = getenv("PELICAN_PUBLISHER_DOMAIN", "")
+if len(env_data) > 0:
+    ALLOWED_HOSTS.append(env_data)
+
+env_data = getenv("PELICAN_PUBLISHER_PREFIX", "")
+if len(env_data) > 0:
+    env_data = f"{env_data.rstrip(" / ").strip('/')}/"
+PELICAN_PUBLISHER_PREFIX = env_data
+
+env_data = getenv("PELICAN_SITES", "")
+if env_data != "":
     try:
-        pelican_sites = json.loads(pelican_sites_json_str)
+        pelican_sites = json.loads(env_data)
         for pelican_site_info in pelican_sites:
             if set(pelican_site_info.keys()) < {"NAME", "ZIP_URL", "WEBHOOK_SECRET"}:
                 raise ValueError
@@ -152,3 +157,5 @@ if pelican_sites_json_str != "":
 
     except ValueError:
         raise Exception("env PELICAN_SITES incorrect")
+
+SENTRY_DSN = getenv("SENTRY_DSN", "")

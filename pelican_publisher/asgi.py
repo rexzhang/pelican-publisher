@@ -8,7 +8,6 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 """
 
 import os
-from os import getenv
 
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 from django.conf import settings
@@ -23,8 +22,7 @@ application = ASGIMiddlewareStaticFile(
     static_root_paths=[settings.STATIC_ROOT],
 )
 
-SENTRY_DSN = getenv("SENTRY_DSN", "")
-if SENTRY_DSN:
+if settings.SENTRY_DSN:
     from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 
     application = SentryAsgiMiddleware(application)

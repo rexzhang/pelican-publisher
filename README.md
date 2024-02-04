@@ -20,6 +20,7 @@ PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rex
 ```
 
 - `PELICAN_PUBLISHER_DOMAIN` is your publisher host's domain, empty will accept any domain
+- `PELICAN_PUBLISHER_PREFIX` is your URL prefix path
 - `PELICAN_SITES` in JSON format, empty is `[]`
 - `SENTRY_DSN` is your sentry client key (DSN)
 
