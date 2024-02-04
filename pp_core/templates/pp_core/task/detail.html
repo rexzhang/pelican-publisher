@@ -9,17 +9,18 @@
         <td>{{ object.id }}</td>
       </tr>
       <tr>
-        <th>args</th>
-        <td>{{ object.args }}</td>
-      </tr>
-      <tr>
         <th>status</th>
         <td>{{ object.state }}</td>
       </tr>
       <tr>
+        <th>due</th>
+        <td>{{ object.due|pp_date }}</td>
+      </tr>
+      <tr>
         <th>created</th>
         <td>{{ object.created|pp_date }}</td>
-      </tr> <tr>
+      </tr>
+      <tr>
         <th>started</th>
         <td>{{ object.started|pp_date }}</td>
       </tr>
@@ -31,8 +32,17 @@
   </table>
   {{ object.get_ }}
 
-  <h2 class="p-4 pb-0.5">Result</h2>
-  <div class="px-4 border border-gray-500">
-    <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
-  </div>
+  {% if object.result %}
+    <h2 class="p-4 pb-0.5">Result</h2>
+    <div class="px-4 border border-gray-500">
+      <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
+    </div>
+  {% endif %}
+
+  {% if object.error %}
+    <h2 class="p-4 pb-0.5">Error</h2>
+    <div class="px-4 border border-gray-500">
+      <p class="font-mono text-xs">{{ object.error|linebreaks }}</p>
+    </div>
+  {% endif %}
 {% endblock %}

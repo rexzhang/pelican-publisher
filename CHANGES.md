@@ -3,6 +3,7 @@
 ## 0.5.2 - 20240204
 
 - Fix bug
+- Add new env: PELICAN_PUBLISHER_PREFIX
 
 ## 0.5.1 - 20240202
 

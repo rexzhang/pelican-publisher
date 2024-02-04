@@ -1,4 +1,4 @@
 -r base.txt
 
-pelican
-markdown
+pelican[markdown]
+typogrify

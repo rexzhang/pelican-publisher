@@ -9,5 +9,5 @@ def test_task(arg1, arg2):
 
 
 @register_task(retries=3, retry_delay=3)
-def build_pelican_site_task(site_name, request_time):
+def build_pelican_site_task(site_name):
     return build_pelican_site(site_name)
