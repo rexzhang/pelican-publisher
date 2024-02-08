@@ -1,5 +1,9 @@
 # CHANGES
 
+## 0.5.3 - 20240208
+
+- Add time zone support
+
 ## 0.5.2 - 20240204
 
 - Fix bug
