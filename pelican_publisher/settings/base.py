@@ -135,18 +135,22 @@ if SENTRY_DSN:
         user_id_is_mac_address=True,
     )
 
-# Parse Env
+# Update settings from env
+env_data = getenv("TZ")
+if env_data:
+    TIME_ZONE = env_data
+
 env_data = getenv("PELICAN_PUBLISHER_DOMAIN", "")
-if len(env_data) > 0:
+if env_data:
     ALLOWED_HOSTS.append(env_data)
 
-env_data = getenv("PELICAN_PUBLISHER_PREFIX", "")
-if len(env_data) > 0:
+env_data = getenv("PELICAN_PUBLISHER_PREFIX")
+if env_data:
     env_data = f"{env_data.rstrip(" / ").strip('/')}/"
 PELICAN_PUBLISHER_PREFIX = env_data
 
-env_data = getenv("PELICAN_SITES", "")
-if env_data != "":
+env_data = getenv("PELICAN_SITES")
+if env_data:
     try:
         pelican_sites = json.loads(env_data)
         for pelican_site_info in pelican_sites:
@@ -157,5 +161,3 @@ if env_data != "":
 
     except ValueError:
         raise Exception("env PELICAN_SITES incorrect")
-
-SENTRY_DSN = getenv("SENTRY_DSN", "")
