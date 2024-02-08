@@ -1,4 +1,4 @@
-{% load pp_core %}
+{% load pp %}
 <h2 class="p-4 pb-0.5 border-b border-gray-500">Pending Tasks</h2>
 <div class="overflow-x-auto">
   <table class="table table-zebra table-pin-rows">
@@ -23,7 +23,7 @@
             <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.state }}</a>
           </td>
           <td>
-            <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.created|pp_date }}</a>
+            <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.created|date_long }}</a>
           </td>
         </tr>
       {% endfor %}

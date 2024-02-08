@@ -1,4 +1,5 @@
-{% extends 'pp_core/base.html' %} {% load pp_core %} {% block content %}
+{% extends 'pp_core/base.html' %} {% load pp %}
+{% block content %}
   <h2 class="p-4">Task Results Detail</h2>
 
   <h2 class="p-4 pb-0.5 border-b border-gray-500">Summary</h2>
@@ -14,19 +15,19 @@
       </tr>
       <tr>
         <th>due</th>
-        <td>{{ object.due|pp_date }}</td>
+        <td>{{ object.due|date_long }}</td>
       </tr>
       <tr>
         <th>created</th>
-        <td>{{ object.created|pp_date }}</td>
+        <td>{{ object.created|date_long }}</td>
       </tr>
       <tr>
         <th>started</th>
-        <td>{{ object.started|pp_date }}</td>
+        <td>{{ object.started|date_long }}</td>
       </tr>
       <tr>
         <th>finished</th>
-        <td>{{ object.finished|pp_date }}</td>
+        <td>{{ object.finished|date_long }}</td>
       </tr>
     </tbody>
   </table>
