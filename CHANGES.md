@@ -1,5 +1,9 @@
 # CHANGES
 
+## 0.5.4 - 20240410
+
+- Update depend(Fix high CPU usage in idle)
+
 ## 0.5.3 - 20240208
 
 - Add time zone support
