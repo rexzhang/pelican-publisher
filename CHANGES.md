@@ -1,6 +1,6 @@
 # CHANGES
 
-## 0.6.0 - 20260123
+## 0.6.1 - 20260123
 
 - chore: upgrade to python 3.14
 - chore: upgrade django to 6.0
