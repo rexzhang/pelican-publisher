@@ -37,7 +37,7 @@ def github_webhook(request, site_name):
     # https://simpleisbetterthancomplex.com/tutorial/2016/10/31/how-to-handle-github-webhooks-using-django.html
     # https://gist.github.com/vitorfs/145a8b8f0865cb65ee915e0c846fc303
     # Verify if request came from GitHub
-    forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    forwarded_for = request.headers.get("x-forwarded-for")
     if forwarded_for is None:
         logger.warning("HTTP_X_FORWARDED_FOR is None")
         return HttpResponseForbidden("Permission denied.")
@@ -53,7 +53,7 @@ def github_webhook(request, site_name):
         return HttpResponseForbidden("Permission denied.")
 
     # Verify the request signature
-    header_signature = request.META.get("HTTP_X_HUB_SIGNATURE")
+    header_signature = request.headers.get("x-hub-signature")
     if header_signature is None:
         logger.warning("HTTP_X_HUB_SIGNATURE is None")
         return HttpResponseForbidden("Permission denied.")
@@ -75,7 +75,7 @@ def github_webhook(request, site_name):
 
     # If request reached this point we are in a good shape
     # Process the GitHub events
-    event = request.META.get("HTTP_X_GITHUB_EVENT", "ping")
+    event = request.headers.get("x-github-event", "ping")
 
     if event == "ping":
         return HttpResponse("pong")

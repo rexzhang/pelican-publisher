@@ -11,7 +11,7 @@ RUN if [ "$ENV" = "rex" ]; then echo "Change depends" \
 
 COPY pelican_publisher /app/pelican_publisher
 COPY pp_core /app/pp_core
-COPY requirements /app/requirements
+COPY requirements.d /app/requirements.d
 COPY manage.py /app/manage.py
 COPY runserver.py /app/runserver.py
 
@@ -22,7 +22,7 @@ RUN \
     # supervisor
     apk add --no-cache supervisor \
     # python depends
-    && pip install --no-cache-dir -r /app/requirements/docker.txt \
+    && pip install --no-cache-dir -r /app/requirements.d/docker.txt \
     # cleanup --- \
     && rm -rf /root/.cache \
     && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \

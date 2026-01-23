@@ -1,4 +1,4 @@
-django>=4.1
+django>=6.0
 django-tailwind
 requests
 

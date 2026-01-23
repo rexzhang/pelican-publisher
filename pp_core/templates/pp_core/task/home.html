@@ -1,15 +1,15 @@
-{% extends 'pp_core/base.html' %}
+{% extends "pp_core/base.html" %}
 {% block head %}
-  <style>
+    <style>
     tr:hover,
     tr:focus-within {
       border-bottom: 1px solid;
     }
-  </style>
-{% endblock %}
+    </style>
+{% endblock head %}
 {% block content %}
-  {% if pending_task_list %}
-    {% include 'pp_core/task/_pending_list.html' %}
-  {% endif %}
-  {% include 'pp_core/task/_finished_list.html' %}
-{% endblock %}
+    {% if pending_task_list %}
+        {% include "pp_core/task/_pending_list.html" %}
+    {% endif %}
+    {% include "pp_core/task/_finished_list.html" %}
+{% endblock content %}

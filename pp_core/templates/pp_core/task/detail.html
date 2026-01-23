@@ -1,49 +1,47 @@
-{% extends 'pp_core/base.html' %} {% load pp %}
+{% extends "pp_core/base.html" %}
+{% load pp %}
 {% block content %}
-  <h2 class="p-4">Task Results Detail</h2>
-
-  <h2 class="p-4 pb-0.5 border-b border-gray-500">Summary</h2>
-  <table class="table table-zebra">
-    <tbody>
-      <tr>
-        <th>id</th>
-        <td>{{ object.id }}</td>
-      </tr>
-      <tr>
-        <th>status</th>
-        <td>{{ object.state }}</td>
-      </tr>
-      <tr>
-        <th>due</th>
-        <td>{{ object.due|date_long }}</td>
-      </tr>
-      <tr>
-        <th>created</th>
-        <td>{{ object.created|date_long }}</td>
-      </tr>
-      <tr>
-        <th>started</th>
-        <td>{{ object.started|date_long }}</td>
-      </tr>
-      <tr>
-        <th>finished</th>
-        <td>{{ object.finished|date_long }}</td>
-      </tr>
-    </tbody>
-  </table>
-  {{ object.get_ }}
-
-  {% if object.result %}
-    <h2 class="p-4 pb-0.5">Result</h2>
-    <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
-    </div>
-  {% endif %}
-
-  {% if object.error %}
-    <h2 class="p-4 pb-0.5">Error</h2>
-    <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.error|linebreaks }}</p>
-    </div>
-  {% endif %}
-{% endblock %}
+    <h2 class="p-4">Task Results Detail</h2>
+    <h2 class="p-4 pb-0.5 border-b border-gray-500">Summary</h2>
+    <table class="table table-zebra">
+        <tbody>
+            <tr>
+                <th>id</th>
+                <td>{{ object.id }}</td>
+            </tr>
+            <tr>
+                <th>status</th>
+                <td>{{ object.state }}</td>
+            </tr>
+            <tr>
+                <th>due</th>
+                <td>{{ object.due|date_long }}</td>
+            </tr>
+            <tr>
+                <th>created</th>
+                <td>{{ object.created|date_long }}</td>
+            </tr>
+            <tr>
+                <th>started</th>
+                <td>{{ object.started|date_long }}</td>
+            </tr>
+            <tr>
+                <th>finished</th>
+                <td>{{ object.finished|date_long }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{ object.get_ }}
+    {% if object.result %}
+        <h2 class="p-4 pb-0.5">Result</h2>
+        <div class="px-4 border border-gray-500">
+            <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
+        </div>
+    {% endif %}
+    {% if object.error %}
+        <h2 class="p-4 pb-0.5">Error</h2>
+        <div class="px-4 border border-gray-500">
+            <p class="font-mono text-xs">{{ object.error|linebreaks }}</p>
+        </div>
+    {% endif %}
+{% endblock content %}

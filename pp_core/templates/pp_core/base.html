@@ -1,36 +1,31 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=devide-width, initial-scale=1.0" />
-    <title>Pelican Publisher</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.1/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% block head %}
-
-    {% endblock %}
-    {% comment %} <style>
-      h2 {
-        color: maroon;
-        margin-left: 40px;
-      }
-    </style> {% endcomment %}
-  </head>
-  <body class="container mx-auto">
-    <header>
-      {% include 'pp_core/_header.html' %}
-    </header>
-    <main class="box p-2">
-      {% block content %}
-
-      {% endblock %}
-    </main>
-    <footer class="box p-2">
-      {% include 'pp_core/_footer.html' %}
-    </footer>
-    {% block js %}
-
-    {% endblock %}
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Pelican Publisher">
+        <meta name="keywords" content="Pelican">
+        <title>Pelican Publisher</title>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.1/dist/full.min.css"
+              rel="stylesheet"
+              type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        {% block head %}
+        {% endblock head %}
+    </head>
+    <body class="container mx-auto">
+        <header>
+            {% include "pp_core/_header.html" %}
+        </header>
+        <main class="box p-2">
+            {% block content %}
+            {% endblock content %}
+        </main>
+        <footer class="box p-2">
+            {% include "pp_core/_footer.html" %}
+        </footer>
+        {% block js %}
+        {% endblock js %}
+    </body>
 </html>
