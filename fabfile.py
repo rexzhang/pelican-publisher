@@ -64,7 +64,7 @@ def _recreate_container(c, container_name: str, docker_run_cmd: str):
 
 @dataclass
 class EnvValue:
-    APP_NAME = "eve-map-online"
+    APP_NAME = "pelican-publisher"
 
     # 目标机器信息
     DEPLOY_STAGE = "dev"
@@ -92,7 +92,10 @@ class EnvValue:
     CONTAINER_WEB_LISTEN_PORT = 8000
     CONTAINER_WEB_BIND_ADDRESS = "0.0.0.0"
 
-    def get_container_name(self, module: str) -> str:
+    def get_container_name(self, module: str | None = None) -> str:
+        if module is None:
+            return f"{self.APP_NAME}-{self.DEPLOY_STAGE}"
+
         return f"{self.APP_NAME}-{self.DEPLOY_STAGE}-{module}"
 
     def switch_to_prd(self):
@@ -112,3 +115,35 @@ def docker_build(c):
     c.run("docker image prune -f")
 
     say_it("build finished")
+
+
+def docker_recreate_web(c):
+    container_name = ev.get_container_name()
+
+    docker_run_cmd = f"""docker run -dit --restart unless-stopped \
+        --env-file .env \
+        --name {container_name} \
+        --label com.centurylinklabs.watchtower.enable=false \
+        {ev.DOCKER_IMAGE_FULL_NAME}
+        """
+
+    _recreate_container(
+        c=c, container_name=container_name, docker_run_cmd=docker_run_cmd
+    )
+
+
+@task
+def deploy(c):
+    conn = Connection(
+        host=ev.DEPLOY_SSH_HOST, port=ev.DEPLOY_SSH_PORT, user=ev.DEPLOY_SSH_USER
+    )
+
+    if ev.DEPLOY_STAGE == "prd":
+        docker_send_image(c)
+    else:
+        docker_push_image(c)
+        docker_pull_image(conn)
+
+    docker_recreate_web(conn)
+
+    say_it("deploy finished")

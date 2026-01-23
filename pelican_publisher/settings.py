@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import warnings
+from json.decoder import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
 
@@ -125,7 +126,7 @@ def _parse_pelican_sites(data: str) -> list[PelicanSite]:
     try:
         result = PelicanSite.from_json(data)
 
-    except ValueError as e:
+    except (ValueError, JSONDecodeError) as e:
         raise Exception(f"please check ENV: PELICAN_SITES. {e}")
 
     if not isinstance(result, list):

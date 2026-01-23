@@ -45,8 +45,8 @@ VOLUME /output
 VOLUME /log
 
 ENV TZ=Asia/Shanghai
-ENV DATABASE_URI=/data/db.sqlite3
-ENV ALLOWED_HOSTS=["*"]
+ENV DATABASE_URI=sqlite:///data/db.sqlite3
+ENV ALLOWED_HOSTS='["*"]'
 ENV PELICAN_WORKING_PATH=/tmp
 ENV PELICAN_OUTPUT_PATH=/output
 
