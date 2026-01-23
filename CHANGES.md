@@ -1,5 +1,12 @@
 # CHANGES
 
+## 0.6.0 - 20260123
+
+- chore: upgrade to python 3.14
+- chore: upgrade django to 6.0
+- chore: modernize
+- refactor: Refactor Django tasks from `django-toosimple-q` to `django-tasks`
+
 ## 0.5.4 - 20240410
 
 - Update depend(Fix high CPU usage in idle)
