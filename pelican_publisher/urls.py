@@ -24,7 +24,7 @@ from pelican_publisher.ev import EV
 urlpatterns = [
     path("", view=task.HomeView.as_view(), name="home"),
     path(
-        "task/<int:pk>/",
+        "task/<uuid:pk>/",
         task.TaskDetailView.as_view(),
         name="task-detail",
     ),

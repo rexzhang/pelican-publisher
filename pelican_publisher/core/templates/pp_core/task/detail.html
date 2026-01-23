@@ -11,23 +11,23 @@
       </tr>
       <tr>
         <th>status</th>
-        <td>{{ object.state }}</td>
+        <td>{{ object.status }}</td>
       </tr>
       <tr>
-        <th>due</th>
-        <td>{{ object.due|date_long }}</td>
+        <th>status</th>
+        <td>{{ object.args_kwargs }}</td>
       </tr>
       <tr>
         <th>created</th>
-        <td>{{ object.created|date_long }}</td>
+        <td>{{ object.enqueued_at|date_long }}</td>
       </tr>
       <tr>
         <th>started</th>
-        <td>{{ object.started|date_long }}</td>
+        <td>{{ object.started_at|date_long }}</td>
       </tr>
       <tr>
         <th>finished</th>
-        <td>{{ object.finished|date_long }}</td>
+        <td>{{ object.finished_at|date_long }}</td>
       </tr>
     </tbody>
   </table>

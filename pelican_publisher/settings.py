@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import warnings
-from pathlib import Path
 from logging import getLogger
+from pathlib import Path
 
 from dataclass_wizard import DataclassWizard
 from django_vises.deploy.deploy_stage import DeployStage
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     # "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_toosimple_q",
+    "django_tasks",
+    "django_tasks.backends.database",
     "tailwind",
     "pelican_publisher.core",
 ]
@@ -103,6 +104,14 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR.joinpath("pelican_publisher", "staticfiles")
+
+# https://github.com/RealOrangeOne/django-tasks
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "OPTIONS": {"id_function": "uuid.uuid7"},
+    }
+}
 
 
 # Pelican Publisher

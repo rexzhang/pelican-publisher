@@ -1,12 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView as DjangoDetailView
 from django.views.generic import TemplateView as DjangoTemplateView
-from django_toosimple_q.models import TaskExec
+from django_tasks.backends.database.models import DBTaskResult
 
 import pelican_publisher
-from pelican_publisher.core.runtimes.django_toosimple_q import (
-    get_finished_task_list,
-    get_pending_task_list,
+from pelican_publisher.core.runtimes.tasks import (
+    get_finished_task_query_set,
+    get_pending_task_query_set,
 )
 from pelican_publisher.core.tasks import test_task
 
@@ -46,7 +46,7 @@ class TestView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        test_task.queue(1, 2)
+        test_task.enqueue(1, 2)
         return context
 
 
@@ -55,16 +55,16 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_task_list = get_pending_task_list()
-        if len(pending_task_list) > 0:
-            context["pending_task_list"] = pending_task_list
+        pending_task_query_set = get_pending_task_query_set()
+        if len(pending_task_query_set) > 0:
+            context["pending_task_list"] = pending_task_query_set
 
-        context["finished_task_list"] = get_finished_task_list()
+        context["finished_task_list"] = get_finished_task_query_set()
         return context
 
 
 class TaskDetailView(DetailView):
-    model = TaskExec
+    model = DBTaskResult
     template_name = "pp_core/task/detail.html"
 
     def get_object(self, queryset=None):

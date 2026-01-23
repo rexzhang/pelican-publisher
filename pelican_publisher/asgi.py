@@ -22,7 +22,7 @@ application = ASGIMiddlewareStaticFile(
     static_root_paths=[settings.STATIC_ROOT],
 )
 
-if settings.SENTRY_DSN:
+if settings.EV.SENTRY_DSN:
     from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 
     application = SentryAsgiMiddleware(application)
