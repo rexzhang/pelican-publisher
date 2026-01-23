@@ -4,11 +4,11 @@ from django.views.generic import TemplateView as DjangoTemplateView
 from django_toosimple_q.models import TaskExec
 
 import pelican_publisher
-from pp_core.runtimes.django_toosimple_q import (
+from pelican_publisher.core.runtimes.django_toosimple_q import (
     get_finished_task_list,
     get_pending_task_list,
 )
-from pp_core.tasks import test_task
+from pelican_publisher.core.tasks import test_task
 
 
 class ViewMixin:

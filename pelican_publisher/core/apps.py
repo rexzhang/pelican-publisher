@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class PpCoreConfig(AppConfig):
-    name = "pp_core"
+    name = "pelican_publisher.core"

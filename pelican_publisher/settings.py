@@ -10,27 +10,34 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import json
-from os import getenv
+import warnings
 from pathlib import Path
-from uuid import uuid4
+from logging import getLogger
+
+from dataclass_wizard import DataclassWizard
+from django_vises.deploy.deploy_stage import DeployStage
+from django_vises.django_settings.helpers import parser_database_uri
 
 from pelican_publisher import __version__
 from pelican_publisher.sentry import init_sentry
 
+from .ev import EV
+
+logger = getLogger("__file__")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = uuid4().hex
+SECRET_KEY = EV.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = EV.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = EV.ALLOWED_HOSTS
 
 # Application definition
 
@@ -43,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_toosimple_q",
     "tailwind",
-    "pp_core",
+    "pelican_publisher.core",
 ]
 
 MIDDLEWARE = [
@@ -79,84 +86,101 @@ WSGI_APPLICATION = "pelican_publisher.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR.joinpath("db.sqlite3"),
-    }
-}
+DATABASES = {"default": parser_database_uri(EV.DATABASE_URI, base_dir=BASE_DIR)}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
-
+TIME_ZONE = EV.TZ
 USE_I18N = True
-
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
+STATIC_ROOT = BASE_DIR.joinpath("pelican_publisher", "staticfiles")
+
 
 # Pelican Publisher
-PELICAN_PUBLISHER = {
-    "WORKING_ROOT": "/tmp",
-    "OUTPUT_ROOT": "/tmp",
-}
+class PelicanSite(DataclassWizard):
+    NAME: str
+    ZIP_URL: str
+    WEBHOOK_SECRET: str
 
-PELICAN_SITES = [
-    {
-        "NAME": "rexzhang.com",
-        "TYPE": "GITHUB",
-        "ZIP_URL": "https://github.com/rexzhang/rexzhang.com/archive/master.zip",
-        "WEBHOOK_SECRET": "please-change-it-!",
-    },
-]
+
+def _parse_pelican_sites(data: str) -> list[PelicanSite]:
+    try:
+        result = PelicanSite.from_json(data)
+
+    except ValueError as e:
+        raise Exception(f"please check ENV: PELICAN_SITES. {e}")
+
+    if not isinstance(result, list):
+        raise Exception("please check ENV: PELICAN_SITES")
+
+    return result
+
+
+if len(EV.PELICAN_SITES) == 0:
+    logger.warning("please set ENV: PELICAN_SITES")
+else:
+    PELICAN_SITES = _parse_pelican_sites(EV.PELICAN_SITES)
+
 
 # Sentry
-SENTRY_DSN = getenv("SENTRY_DSN", "")
-if SENTRY_DSN:
+if EV.SENTRY_DSN:
     from sentry_sdk.integrations.asyncio import AsyncioIntegration
     from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.logging import LoggingIntegration
 
     init_sentry(
-        dsn=SENTRY_DSN,
+        dsn=EV.SENTRY_DSN,
         integrations=[AsyncioIntegration(), DjangoIntegration(), LoggingIntegration()],
         app_name="PelicanPublisher",
         app_version=__version__,
         user_id_is_mac_address=True,
     )
 
-# Update settings from env
-env_data = getenv("TZ")
-if env_data:
-    TIME_ZONE = env_data
 
-env_data = getenv("PELICAN_PUBLISHER_DOMAIN", "")
-if env_data:
-    ALLOWED_HOSTS.append(env_data)
+# 基于部署环境调整 ---
+# --- 多环境共享
+if EV.DEPLOY_STAGE in (DeployStage.LOCAL, DeployStage.DEV):
+    # 打开调试信息
+    DEBUG = True
+    warnings.simplefilter("always", DeprecationWarning)
+    warnings.simplefilter("always", FutureWarning)
 
-env_data = getenv("PELICAN_PUBLISHER_PREFIX")
-if env_data:
-    env_data = f"{env_data.rstrip(" / ").strip('/')}/"
-PELICAN_PUBLISHER_PREFIX = env_data
+    # 模版调试
+    TEMPLATES[0]["OPTIONS"]["context_processors"].insert(
+        0, "django.template.context_processors.debug"
+    )
 
-env_data = getenv("PELICAN_SITES")
-if env_data:
-    try:
-        pelican_sites = json.loads(env_data)
-        for pelican_site_info in pelican_sites:
-            if set(pelican_site_info.keys()) < {"NAME", "ZIP_URL", "WEBHOOK_SECRET"}:
-                raise ValueError
+    # 测试部署环境
+    ALLOWED_HOSTS = ["*"]
+    INTERNAL_IPS = ("127.0.0.1",)
 
-        PELICAN_SITES = pelican_sites
 
-    except ValueError:
-        raise Exception("env PELICAN_SITES incorrect")
+# --- 环境之间独立
+match EV.DEPLOY_STAGE:
+    case DeployStage.LOCAL:
+        # 避免再登录
+        SECRET_KEY = "e375cf18ebbf40259c96696671bbb7a1"
+
+        # debug 工具
+        INSTALLED_APPS += [
+            "django.contrib.auth",
+            "django.contrib.contenttypes",
+            "orbit",
+        ]
+        MIDDLEWARE.insert(0, "orbit.middleware.OrbitMiddleware")
+
+    case DeployStage.DEV:
+        # USE_X_FORWARDED_HOST = True
+        pass
+
+    case DeployStage.PRD:
+        pass

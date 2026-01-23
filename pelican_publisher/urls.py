@@ -16,8 +16,10 @@ Including another URLconf
 
 from django.conf import settings
 from django.urls import include, path
+from django_vises.deploy.deploy_stage import DeployStage
 
-from pp_core.views import task, web_hook
+from pelican_publisher.core.views import task, web_hook
+from pelican_publisher.ev import EV
 
 urlpatterns = [
     path("", view=task.HomeView.as_view(), name="home"),
@@ -41,8 +43,12 @@ if settings.DEBUG:
         path("webhook/test", web_hook.test, name="web-hook-test"),
     ]
 
-if settings.PELICAN_PUBLISHER_PREFIX:
-    urlpatterns = [path(settings.PELICAN_PUBLISHER_PREFIX, include(urlpatterns))]
+if EV.PELICAN_PUBLISHER_PREFIX:
+    urlpatterns = [path(EV.PELICAN_PUBLISHER_PREFIX, include(urlpatterns))]
 
-if settings.DEBUG:
-    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
+
+match EV.DEPLOY_STAGE:
+    case DeployStage.LOCAL:
+        urlpatterns += [
+            path("orbit/", include("orbit.urls")),
+        ]

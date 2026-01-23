@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 import hmac
 from hashlib import sha1
 from ipaddress import ip_address, ip_network
@@ -17,12 +14,13 @@ from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from pp_core.runtimes.common import get_site_info_by_name
-from pp_core.tasks import build_pelican_site_task
+from pelican_publisher.core.runtimes.common import get_pelican_site_by_name
+from pelican_publisher.core.tasks import build_pelican_site_task
 
 logger = getLogger(__name__)
 
 
+@csrf_exempt
 def test(request):
     build_pelican_site_task.queue("rexzhang.com")
     return HttpResponse("build_pelican_site_task started")
@@ -62,10 +60,12 @@ def github_webhook(request, site_name):
     if sha_name != "sha1":
         return HttpResponseServerError("Operation not supported.", status=501)
 
-    site_info = get_site_info_by_name(site_name)
+    pelican_site = get_pelican_site_by_name(site_name)
+    if pelican_site is None:
+        raise
 
     mac = hmac.new(
-        force_bytes(site_info["WEBHOOK_SECRET"]),
+        force_bytes(pelican_site.WEBHOOK_SECRET),
         msg=force_bytes(request.body),
         digestmod=sha1,
     )

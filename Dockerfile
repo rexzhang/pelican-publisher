@@ -1,35 +1,40 @@
 FROM python:3.14-alpine
 
-ARG ENV
-ENV TZ="Asia/Shanghai"
-
-RUN if [ "$ENV" = "rex" ]; then echo "Change depends" \
-    && pip config set global.index-url http://192.168.200.26:13141/root/pypi/+simple \
-    && pip config set install.trusted-host 192.168.200.26 \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
+ARG BUILD_ENV
+RUN if [ "$BUILD_ENV" = "rex" ]; then echo "Change depends" \
+    && sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories \
+    && pip config set global.index-url https://proxpi.h.rexzhang.com/index/ \
+    && pip config set install.trusted-host proxpi.h.rexzhang.com \
     ; fi
 
-COPY pelican_publisher /app/pelican_publisher
-COPY pp_core /app/pp_core
 COPY requirements.d /app/requirements.d
+
+RUN \
+    # install python build depends ---
+    apk add --no-cache --virtual .build-deps build-base libffi-dev \
+    # --- build & install
+    && pip install --no-cache-dir -r /app/requirements.d/docker.txt \
+    # --- cleanup
+    && apk del .build-deps \
+    && rm -rf /root/.cache \
+    && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \
+    && find /usr/local/lib/python*/ -type d -name '__pycache__' -delete \
+    # supervisor
+    && apk add --no-cache supervisor
+
+
+COPY pelican_publisher /app/pelican_publisher
 COPY manage.py /app/manage.py
 COPY runserver.py /app/runserver.py
 
 COPY deploy/docker/entrypoint.sh /app/entrypoint.sh
 COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d/
 
+WORKDIR /app
+
 RUN \
-    # supervisor
-    apk add --no-cache supervisor \
-    # python depends
-    && pip install --no-cache-dir -r /app/requirements.d/docker.txt \
-    # cleanup --- \
-    && rm -rf /root/.cache \
-    && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \
-    && find /usr/local/lib/python*/ -type d -name "__pycache__" -delete \
-    # prepare django ---
-    && mv /app/pelican_publisher/settings/docker.py /app/pelican_publisher/settings/running.py \
     # prepare path ---
+    python manage.py collectstatic --no-input \
     && mkdir /data \
     && mkdir /output \
     && mkdir /log
@@ -39,8 +44,11 @@ VOLUME /data
 VOLUME /output
 VOLUME /log
 
-WORKDIR /app
-RUN ./manage.py collectstatic --no-input
+ENV TZ=Asia/Shanghai
+ENV DATABASE_URI=/data/db.sqlite3
+ENV ALLOWED_HOSTS=["*"]
+ENV PUBLISHER_WORKING_PATH=/tmp
+ENV PUBLISHER_WORKING_PATH=/output
 
 # TODO: nobody
 CMD ./entrypoint.sh

@@ -9,7 +9,9 @@ from zipfile import ZipFile
 import requests
 from django.conf import settings
 
-from pp_core.runtimes.common import get_site_info_by_name
+from pelican_publisher.core.runtimes.common import get_pelican_site_by_name
+from pelican_publisher.ev import EV
+from pelican_publisher.settings import PelicanSite
 
 logger = getLogger(__name__)
 
@@ -26,10 +28,14 @@ def _run_subprocess_run(cmd):
 
 
 def build_pelican_site(site_name):
-    site_info = get_site_info_by_name(site_name)
+    pelican_site = get_pelican_site_by_name(site_name)
+    if pelican_site is None:
+        raise
 
     # get source
-    site_stage_path, site_file_path = _download_and_extract_zip_from_github(site_info)
+    site_stage_path, site_file_path = _download_and_extract_zip_from_github(
+        pelican_site
+    )
     if site_file_path is None:
         return
 
@@ -45,7 +51,7 @@ def build_pelican_site(site_name):
     result = _generate_site_to_local_file(
         pelican_content_path=content_path,
         pelican_settings_file=settings_file,
-        site_info=site_info,
+        pelican_site=pelican_site,
     )
 
     # cleanup
@@ -55,21 +61,19 @@ def build_pelican_site(site_name):
     return result
 
 
-def _download_and_extract_zip_from_github(site_info):
+def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
     """
     from https://pelican-blog/archive/master.zip
     to: /path/pelican-blog
     """
     unique_id = uuid4().hex
-    zip_file_url = site_info["ZIP_URL"]
+    zip_file_url = pelican_site.ZIP_URL
 
     zip_file_name = os.path.join(
-        settings.PELICAN_PUBLISHER["WORKING_ROOT"],
-        "{}-{}.zip".format(site_info["NAME"], unique_id),
+        EV.PUBLISHER_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}.zip"
     )
     site_stage_path = os.path.join(
-        settings.PELICAN_PUBLISHER["WORKING_ROOT"],
-        "{}-{}".format(site_info["NAME"], unique_id),
+        EV.PUBLISHER_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}"
     )
     logger.debug(f"zip file name: {zip_file_name}")
     logger.debug(f"site stage path: {site_stage_path}")
@@ -102,11 +106,9 @@ def _download_and_extract_zip_from_github(site_info):
 
 
 def _generate_site_to_local_file(
-    pelican_content_path, pelican_settings_file, site_info
+    pelican_content_path, pelican_settings_file, pelican_site: PelicanSite
 ):
-    output_path = os.path.join(
-        settings.PELICAN_PUBLISHER["OUTPUT_ROOT"], site_info["NAME"]
-    )
+    output_path = os.path.join(EV.PUBLISHER_OUTPUT_PATH, pelican_site.NAME)
     return_code, output = _run_subprocess_run(
         [
             "pelican",
