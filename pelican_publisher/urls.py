@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf import settings
 from django.urls import include, path
 from django_vises.deploy.deploy_stage import DeployStage
 
@@ -35,13 +34,6 @@ urlpatterns = [
     ),
 ]
 
-if settings.DEBUG:
-    # from django.contrib import admin
-    urlpatterns += [
-        # path("admin/", admin.site.urls),
-        path("task/test", view=task.TestView.as_view(), name="task-test"),
-        path("webhook/test", web_hook.test, name="web-hook-test"),
-    ]
 
 if EV.HOST_URL_PATH_PREFIX:
     urlpatterns = [path(EV.HOST_URL_PATH_PREFIX, include(urlpatterns))]
@@ -50,5 +42,8 @@ if EV.HOST_URL_PATH_PREFIX:
 match EV.DEPLOY_STAGE:
     case DeployStage.LOCAL:
         urlpatterns += [
+            # path("admin/", admin.site.urls),
+            path("task/test", view=task.TestView.as_view(), name="task-test"),
+            path("webhook/test", web_hook.test, name="web-hook-test"),
             path("orbit/", include("orbit.urls")),
         ]
