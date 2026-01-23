@@ -5,8 +5,8 @@ from django_tasks.backends.database.models import DBTaskResult
 
 import pelican_publisher
 from pelican_publisher.core.runtimes.tasks import (
-    get_finished_task_query_set,
-    get_pending_task_query_set,
+    get_end_task_list,
+    get_pending_task_list,
 )
 from pelican_publisher.core.tasks import test_task
 
@@ -55,11 +55,12 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_task_query_set = get_pending_task_query_set()
-        if len(pending_task_query_set) > 0:
-            context["pending_task_list"] = pending_task_query_set
-
-        context["finished_task_list"] = get_finished_task_query_set()
+        context.update(
+            {
+                "pending_task_list": get_pending_task_list(),
+                "finished_task_list": get_end_task_list(),
+            }
+        )
         return context
 
 

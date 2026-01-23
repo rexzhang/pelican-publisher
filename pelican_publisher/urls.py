@@ -43,8 +43,8 @@ if settings.DEBUG:
         path("webhook/test", web_hook.test, name="web-hook-test"),
     ]
 
-if EV.PELICAN_PUBLISHER_PREFIX:
-    urlpatterns = [path(EV.PELICAN_PUBLISHER_PREFIX, include(urlpatterns))]
+if EV.HOST_URL_PATH_PREFIX:
+    urlpatterns = [path(EV.HOST_URL_PATH_PREFIX, include(urlpatterns))]
 
 
 match EV.DEPLOY_STAGE:

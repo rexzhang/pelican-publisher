@@ -70,10 +70,10 @@ def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
     zip_file_url = pelican_site.ZIP_URL
 
     zip_file_name = os.path.join(
-        EV.PUBLISHER_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}.zip"
+        EV.PELICAN_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}.zip"
     )
     site_stage_path = os.path.join(
-        EV.PUBLISHER_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}"
+        EV.PELICAN_WORKING_PATH, f"{pelican_site.NAME}-{unique_id}"
     )
     logger.debug(f"zip file name: {zip_file_name}")
     logger.debug(f"site stage path: {site_stage_path}")
@@ -108,7 +108,7 @@ def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
 def _generate_site_to_local_file(
     pelican_content_path, pelican_settings_file, pelican_site: PelicanSite
 ):
-    output_path = os.path.join(EV.PUBLISHER_OUTPUT_PATH, pelican_site.NAME)
+    output_path = os.path.join(EV.PELICAN_OUTPUT_PATH, pelican_site.NAME)
     return_code, output = _run_subprocess_run(
         [
             "pelican",

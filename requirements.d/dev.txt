@@ -7,3 +7,4 @@ fabric
 
 django-tailwind[reload]
 django-orbit
+icecream

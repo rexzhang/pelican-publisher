@@ -7,12 +7,12 @@ class EnvVar(EnvVarAbc, EnvWizard):
     class _(EnvWizard.Meta):
         env_file = True
 
-    PELICAN_SITES: str = ""
-    PUBLISHER_WORKING_PATH: str = "/tmp"
-    PUBLISHER_OUTPUT_PATH: str = "/tmp"
+    HOST_URL_PATH_PREFIX: str = ""
 
-    PELICAN_PUBLISHER_PREFIX: str = ""
+    PELICAN_SITES: str = ""
+    PELICAN_WORKING_PATH: str = "/tmp"
+    PELICAN_OUTPUT_PATH: str = "/tmp"
 
 
 EV = EnvVar()
-EV.PELICAN_PUBLISHER_PREFIX = EV.PELICAN_PUBLISHER_PREFIX.strip(" /").rstrip(" /")
+EV.HOST_URL_PATH_PREFIX = EV.HOST_URL_PATH_PREFIX.strip(" /").rstrip(" /")

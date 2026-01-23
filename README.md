@@ -15,12 +15,13 @@ docker pull ray1ex/pelican-publisher
 Create file `pelican-publisher.env`
 
 ```env
-PELICAN_PUBLISHER_DOMAIN=pelican-publisher.rexzhang.com
+ALLOWED_HOSTS=["rexzhang.com"]
+HOST_URL_PATH_PREFIX=/pelican-publisher
 PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rexzhang.com/archive/master.zip","WEBHOOK_SECRET":"please-change-it-!"},{"NAME":"sample.com","ZIP_URL":"https://sample.com/master.zip","WEBHOOK_SECRET":"secret"}]
 ```
 
-- `PELICAN_PUBLISHER_DOMAIN` is your publisher host's domain, empty will accept any domain
-- `PELICAN_PUBLISHER_PREFIX` is your URL prefix path
+- `ALLOWED_HOSTS` is your publisher host's domain, `["*"]` will accept any domain
+- `HOST_URL_PATH_PREFIX` is your URL prefix path
 - `PELICAN_SITES` in JSON format, empty is `[]`
 - `SENTRY_DSN` is your sentry client key (DSN)
 
@@ -40,15 +41,15 @@ docker run -dit -p 127.0.0.1:8000:8000 --restart unless-stopped \
 
 - Github
   - Payload URL: like this
-        `https://pelican-publisher.rexzhang.com/webhook/github/rexzhang.com`
+    `https://pelican-publisher.rexzhang.com/webhook/github/rexzhang.com`
   - Content type: application/json
 
 ## Example
 
-| instance          | <https://pelican-publisher.rexzhang.com>   |
-|-------------------|------------------------------------------|
-| source            | <https://github.com/rexzhang/rexzhang.com> |
-| target            | <https://rexzhang.com>                     |
+| instance | <https://pelican-publisher.rexzhang.com>   |
+| -------- | ------------------------------------------ |
+| source   | <https://github.com/rexzhang/rexzhang.com> |
+| target   | <https://rexzhang.com>                     |
 
 ## TODO
 

@@ -15,7 +15,7 @@
       </tr>
       <tr>
         <th>status</th>
-        <td>{{ object.args_kwargs }}</td>
+        <td>{{ object.args_kwargs|safe }}</td>
       </tr>
       <tr>
         <th>created</th>
@@ -31,17 +31,10 @@
       </tr>
     </tbody>
   </table>
-  {{ object.get_ }}
-  {% if object.result %}
+  {% if object.return_value %}
     <h2 class="p-4 pb-0.5">Result</h2>
     <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.result|linebreaks }}</p>
-    </div>
-  {% endif %}
-  {% if object.error %}
-    <h2 class="p-4 pb-0.5">Error</h2>
-    <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.error|linebreaks }}</p>
+      <p class="font-mono text-xs">{{ object.return_value|linebreaks }}</p>
     </div>
   {% endif %}
 {% endblock content %}
