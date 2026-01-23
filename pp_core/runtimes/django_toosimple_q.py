@@ -1,4 +1,4 @@
-from django_toosimple_q.models import TaskExec, WorkerStatus
+from django_toosimple_q.models import TaskExec
 
 pending_states = [
     TaskExec.States.SLEEPING,

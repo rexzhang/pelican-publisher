@@ -2,7 +2,6 @@
 
 
 import hmac
-from datetime import datetime
 from hashlib import sha1
 from ipaddress import ip_address, ip_network
 from logging import getLogger
