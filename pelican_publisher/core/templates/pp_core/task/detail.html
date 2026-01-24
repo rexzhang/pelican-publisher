@@ -37,4 +37,10 @@
       <p class="font-mono text-xs">{{ object.return_value|linebreaks }}</p>
     </div>
   {% endif %}
+  {% if object.traceback %}
+    <h2 class="p-4 pb-0.5">Result</h2>
+    <div class="px-4 border border-gray-500">
+      <p class="font-mono text-xs">{{ object.traceback|linebreaks }}</p>
+    </div>
+  {% endif %}
 {% endblock content %}
