@@ -9,5 +9,5 @@ def test_task(arg1, arg2):
 
 
 @task()
-def build_pelican_site_task(site_name):
+def build_pelican_site_task(site_name: str):
     return build_pelican_site(site_name)

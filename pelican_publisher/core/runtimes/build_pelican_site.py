@@ -27,17 +27,17 @@ def _run_subprocess_run(cmd):
     return return_code, output
 
 
-def build_pelican_site(site_name):
+def build_pelican_site(site_name: str) -> str:
     pelican_site = get_pelican_site_by_name(site_name)
     if pelican_site is None:
-        raise
+        raise Exception(f"Can not match pelican site: {site_name}")
 
     # get source
     site_stage_path, site_file_path = _download_and_extract_zip_from_github(
         pelican_site
     )
-    if site_file_path is None:
-        return
+    if site_stage_path is None or site_file_path is None:
+        raise Exception(f"Pull site: {site_name} from github failed.")
 
     # generate site
     content_path = PurePath(site_file_path).joinpath("content")
@@ -58,6 +58,7 @@ def build_pelican_site(site_name):
     if not settings.DEBUG:
         rmtree(site_stage_path, ignore_errors=True)
 
+    logger.info(f"Generate site: {site_name} finished")
     return result
 
 
@@ -107,7 +108,7 @@ def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
 
 def _generate_site_to_local_file(
     pelican_content_path, pelican_settings_file, pelican_site: PelicanSite
-):
+) -> str:
     output_path = os.path.join(EV.PELICAN_OUTPUT_PATH, pelican_site.NAME)
     return_code, output = _run_subprocess_run(
         [
@@ -120,7 +121,7 @@ def _generate_site_to_local_file(
         ]
     )
 
-    logger.info(f"build to: {output_path} finished")
+    logger.debug(f"build to: {output_path} finished")
     return output
 
 
