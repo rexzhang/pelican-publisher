@@ -49,8 +49,7 @@ INSTALLED_APPS = [
     # "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_tasks",
-    "django_tasks.backends.database",
+    "django_tasks_db",
     "tailwind",
     "pelican_publisher.core",
 ]
@@ -121,7 +120,7 @@ LOGGING = {
 # https://github.com/RealOrangeOne/django-tasks
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "BACKEND": "django_tasks_db.DatabaseBackend",
         "OPTIONS": {"id_function": "uuid.uuid7"},
     }
 }
