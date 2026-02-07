@@ -1,7 +1,0 @@
-[program:web-server]
-user = root
-directory = /app/pelican_publisher
-command = daphne pelican_publisher.asgi:application -b 0.0.0.0
-
-redirect_stderr = true
-stdout_logfile = log/web-server.log

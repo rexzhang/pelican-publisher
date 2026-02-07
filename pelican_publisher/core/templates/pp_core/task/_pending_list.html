@@ -7,7 +7,7 @@
         <th>id</th>
         <th>site name</th>
         <th>state</th>
-        <th>created</th>
+        <th>started at</th>
       </tr>
     </thead>
     <tbody>
@@ -17,13 +17,13 @@
             <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.id }}</a>
           </td>
           <td>
-            <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.args_kwargs }}</a>
+            <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.site_name }}</a>
           </td>
           <td>
             <a href="{% url 'task-detail' task.id %}" class="row-link" tabindex="-1">{{ task.status }}</a>
           </td>
           <td>
-            <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.enqueued_at|date_long }}</a>
+            <a href="{% url 'task-detail' task.id %}" class="row-link">{{ task.started_at|date_long }}</a>
           </td>
         </tr>
       {% endfor %}

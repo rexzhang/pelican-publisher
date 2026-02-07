@@ -18,17 +18,13 @@ RUN \
     && apk del .build-deps \
     && rm -rf /root/.cache \
     && find /usr/local/lib/python*/ -type f -name '*.py[cod]' -delete \
-    && find /usr/local/lib/python*/ -type d -name '__pycache__' -delete \
-    # supervisor
-    && apk add --no-cache supervisor
+    && find /usr/local/lib/python*/ -type d -name '__pycache__' -delete
 
 
 COPY pelican_publisher /app/pelican_publisher
 COPY manage.py /app/manage.py
 COPY runserver.py /app/runserver.py
-
-COPY deploy/docker/entrypoint.sh /app/entrypoint.sh
-COPY deploy/supervisor/conf.d/*.ini /etc/supervisor.d/
+COPY entrypoint.sh /app/entrypoint.sh
 
 WORKDIR /app
 

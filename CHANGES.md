@@ -1,5 +1,9 @@
 # CHANGES
 
+## Next
+
+- refactor: remove django-tasks
+
 ## 0.6.1 - 20260123
 
 - chore: upgrade to python 3.14

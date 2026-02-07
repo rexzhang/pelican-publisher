@@ -43,7 +43,7 @@ match EV.DEPLOY_STAGE:
     case DeployStage.LOCAL:
         urlpatterns += [
             # path("admin/", admin.site.urls),
-            path("task/test", view=task.TestView.as_view(), name="task-test"),
+            path("task/test", view=task.CallTestView.as_view(), name="task-call-test"),
             path("webhook/test", web_hook.test, name="web-hook-test"),
             path("orbit/", include("orbit.urls")),
         ]

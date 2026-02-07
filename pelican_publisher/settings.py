@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     # "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_tasks_db",
     "tailwind",
     "pelican_publisher.core",
 ]
@@ -105,23 +104,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR.joinpath("pelican_publisher", "staticfiles")
 
-# https://docs.djangoproject.com/zh-hans/6.0/howto/logging
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "loggers": {
-        "django_tasks": {
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
 
 # https://github.com/RealOrangeOne/django-tasks
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks_db.DatabaseBackend",
-        "OPTIONS": {"id_function": "uuid.uuid7"},
+        "BACKEND": "django.tasks.backends.immediate.ImmediateBackend",
     }
 }
 

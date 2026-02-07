@@ -15,32 +15,28 @@
       </tr>
       <tr>
         <th>status</th>
-        <td>{{ object.args_kwargs|safe }}</td>
+        <td>{{ object.site_name }}</td>
       </tr>
       <tr>
-        <th>created</th>
-        <td>{{ object.enqueued_at|date_long }}</td>
-      </tr>
-      <tr>
-        <th>started</th>
+        <th>started at</th>
         <td>{{ object.started_at|date_long }}</td>
       </tr>
       <tr>
-        <th>finished</th>
+        <th>finished at</th>
         <td>{{ object.finished_at|date_long }}</td>
       </tr>
     </tbody>
   </table>
-  {% if object.return_value %}
-    <h2 class="p-4 pb-0.5">Result</h2>
+  {% if object.stdout %}
+    <h2 class="p-4 pb-0.5">stdout</h2>
     <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.return_value|linebreaks }}</p>
+      <p class="font-mono text-xs">{{ object.stdout|linebreaks }}</p>
     </div>
   {% endif %}
-  {% if object.traceback %}
-    <h2 class="p-4 pb-0.5">Result</h2>
+  {% if object.stderr %}
+    <h2 class="p-4 pb-0.5">stderr</h2>
     <div class="px-4 border border-gray-500">
-      <p class="font-mono text-xs">{{ object.traceback|linebreaks }}</p>
+      <p class="font-mono text-xs">{{ object.stderr|linebreaks }}</p>
     </div>
   {% endif %}
 {% endblock content %}

@@ -21,14 +21,14 @@ logger = getLogger(__name__)
 
 
 @csrf_exempt
-def test(request):
-    build_pelican_site_task.enqueue("rexzhang.com")
+async def test(request):
+    await build_pelican_site_task.aenqueue("rexzhang.com")
     return HttpResponse("build_pelican_site_task started")
 
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
-def github_webhook(request, site_name):
+async def github_webhook(request, site_name):
     if request.method != "POST":
         return HttpResponseRedirect("/")
 
@@ -82,7 +82,7 @@ def github_webhook(request, site_name):
     elif event == "push":
         # Deploy some code for example
         logger.debug(request.body)
-        build_pelican_site_task.enqueue(site_name)
+        await build_pelican_site_task.aenqueue(site_name)
         logger.info("webhook request process finished")
         return HttpResponse("success")
 

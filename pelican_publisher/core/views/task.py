@@ -1,13 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView as DjangoDetailView
 from django.views.generic import TemplateView as DjangoTemplateView
-from django_tasks.backends.database.models import DBTaskResult
 
 import pelican_publisher
-from pelican_publisher.core.runtimes.tasks import (
-    get_end_task_list,
-    get_pending_task_list,
-)
+from pelican_publisher.core.constans import TaskStatus
+from pelican_publisher.core.models import Task
 from pelican_publisher.core.tasks import test_task
 
 
@@ -40,13 +37,13 @@ class DetailView(ViewMixin, DjangoDetailView):
         return context
 
 
-class TestView(TemplateView):
+class CallTestView(TemplateView):
     template_name = "pp_core/task/home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        test_task.enqueue(1, 2)
+        test_task.enqueue("example.com")
         return context
 
 
@@ -57,15 +54,21 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update(
             {
-                "pending_task_list": get_pending_task_list(),
-                "finished_task_list": get_end_task_list(),
+                "pending_task_list": Task.objects.filter(
+                    status__in=[TaskStatus.READY.value, TaskStatus.RUNNING.value]
+                )
+                .order_by("-created_time")
+                .all(),
+                "finished_task_list": Task.objects.filter(
+                    status__in=[TaskStatus.FAILED.value, TaskStatus.SUCCESSFUL.value]
+                ).order_by("-created_time")[:10],
             }
         )
         return context
 
 
 class TaskDetailView(DetailView):
-    model = DBTaskResult
+    model = Task
     template_name = "pp_core/task/detail.html"
 
     def get_object(self, queryset=None):

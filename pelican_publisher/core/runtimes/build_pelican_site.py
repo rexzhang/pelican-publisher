@@ -9,6 +9,7 @@ from zipfile import ZipFile
 import requests
 from django.conf import settings
 
+from pelican_publisher.core.constans import ShelRunResponse
 from pelican_publisher.core.runtimes.common import get_pelican_site_by_name
 from pelican_publisher.ev import EV
 from pelican_publisher.settings import PelicanSite
@@ -16,18 +17,14 @@ from pelican_publisher.settings import PelicanSite
 logger = getLogger(__name__)
 
 
-def _run_subprocess_run(cmd):
+def _run_subprocess_run(cmd) -> ShelRunResponse:
     r = subprocess.run(cmd, capture_output=True, encoding="utf-8", text=True)
-    return_code = r.returncode
-    output = r.stdout
-    output += "\n"
-    output += r.stderr
 
-    logger.info(f"returncode: {return_code}")
-    return return_code, output
+    logger.info(f"returncode: {r.returncode}")
+    return ShelRunResponse(r.returncode, r.stdout, r.stderr)
 
 
-def build_pelican_site(site_name: str) -> str:
+def build_pelican_site(site_name: str) -> ShelRunResponse:
     pelican_site = get_pelican_site_by_name(site_name)
     if pelican_site is None:
         raise Exception(f"Can not match pelican site: {site_name}")
@@ -48,7 +45,7 @@ def build_pelican_site(site_name: str) -> str:
     else:
         settings_file = pelicanconf_file
 
-    result = _generate_site_to_local_file(
+    shel_run_response = _generate_site_to_local_file(
         pelican_content_path=content_path,
         pelican_settings_file=settings_file,
         pelican_site=pelican_site,
@@ -59,7 +56,7 @@ def build_pelican_site(site_name: str) -> str:
         rmtree(site_stage_path, ignore_errors=True)
 
     logger.info(f"Generate site: {site_name} finished")
-    return result
+    return shel_run_response
 
 
 def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
@@ -108,9 +105,9 @@ def _download_and_extract_zip_from_github(pelican_site: PelicanSite):
 
 def _generate_site_to_local_file(
     pelican_content_path, pelican_settings_file, pelican_site: PelicanSite
-) -> str:
+) -> ShelRunResponse:
     output_path = os.path.join(EV.PELICAN_OUTPUT_PATH, pelican_site.NAME)
-    return_code, output = _run_subprocess_run(
+    shel_run_response = _run_subprocess_run(
         [
             "pelican",
             "-s",
@@ -122,10 +119,9 @@ def _generate_site_to_local_file(
     )
 
     logger.debug(f"build to: {output_path} finished")
-    return output
+    return shel_run_response
 
 
-def test(arg1, arg2):
+def test(site_name: str) -> ShelRunResponse:
     logger.info("this is test logging message")
-    return_code, output = _run_subprocess_run(["ls", "-la"])
-    return output
+    return _run_subprocess_run(["ls", "-la"])

@@ -1,3 +1,15 @@
-from django.db import models  # noqa F401
+from django.db import models
+from django_vises.db.model.base import RecordAbc
 
-# Create your models here.
+from .constans import TaskStatus
+
+
+class Task(RecordAbc):
+    site_name = models.CharField()
+    status = models.CharField(default=TaskStatus.READY.value)
+
+    stdout = models.TextField(null=True)
+    stderr = models.TextField(null=True)
+
+    started_at = models.DateTimeField(null=True)
+    finished_at = models.DateTimeField(null=True)
