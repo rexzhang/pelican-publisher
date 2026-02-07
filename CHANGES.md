@@ -1,6 +1,6 @@
 # CHANGES
 
-## Next
+## 0.7.0 - 20260207
 
 - refactor: remove django-tasks
 
