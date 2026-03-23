@@ -1,5 +1,9 @@
 # CHANGES
 
+## 0.7.1 - 20260323
+
+- fix: env: HOST_URL_PATH_PREFIX support
+
 ## 0.7.0 - 20260207
 
 - refactor: remove django-tasks
