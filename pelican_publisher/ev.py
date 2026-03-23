@@ -15,4 +15,4 @@ class EnvVar(EnvVarAbc, EnvWizard):
 
 
 EV = EnvVar()
-EV.HOST_URL_PATH_PREFIX = EV.HOST_URL_PATH_PREFIX.strip(" /").rstrip(" /")
+EV.HOST_URL_PATH_PREFIX = f"{EV.HOST_URL_PATH_PREFIX.strip(" /").rstrip(" /")}/"

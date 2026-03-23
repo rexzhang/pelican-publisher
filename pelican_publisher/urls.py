@@ -20,10 +20,10 @@ from django_vises.deploy.deploy_stage import DeployStage
 from pelican_publisher.core.views import task, web_hook
 from pelican_publisher.ev import EV
 
-urlpatterns = [
+urlpatterns_base = [
     path("", view=task.HomeView.as_view(), name="home"),
     path(
-        "task/<uuid:pk>/",
+        "task/<uuid:pk>",
         task.TaskDetailView.as_view(),
         name="task-detail",
     ),
@@ -34,16 +34,22 @@ urlpatterns = [
     ),
 ]
 
+match EV.DEPLOY_STAGE:
+    case DeployStage.LOCAL:
+        urlpatterns_base += [
+            path("task/test", view=task.CallTestView.as_view(), name="task-call-test"),
+            path("webhook/test", web_hook.test, name="web-hook-test"),
+        ]
 
 if EV.HOST_URL_PATH_PREFIX:
-    urlpatterns = [path(EV.HOST_URL_PATH_PREFIX, include(urlpatterns))]
+    urlpatterns = [path(EV.HOST_URL_PATH_PREFIX, include(urlpatterns_base))]
+else:
+    urlpatterns = urlpatterns_base
 
 
 match EV.DEPLOY_STAGE:
     case DeployStage.LOCAL:
         urlpatterns += [
             # path("admin/", admin.site.urls),
-            path("task/test", view=task.CallTestView.as_view(), name="task-call-test"),
-            path("webhook/test", web_hook.test, name="web-hook-test"),
             path("orbit/", include("orbit.urls")),
         ]

@@ -134,10 +134,13 @@ def _parse_pelican_sites(data: str) -> list[PelicanSite]:
 
 
 if len(EV.PELICAN_SITES) == 0:
-    logger.warning("please set ENV: PELICAN_SITES")
+    print("please set ENV: PELICAN_SITES")
 else:
     PELICAN_SITES = _parse_pelican_sites(EV.PELICAN_SITES)
+    print(f"env: PELICAN_SITES: {PELICAN_SITES}")
 
+if EV.HOST_URL_PATH_PREFIX:
+    print(f"env: HOST_URL_PATH_PREFIX: {EV.HOST_URL_PATH_PREFIX}")
 
 # Sentry
 if EV.SENTRY_DSN:

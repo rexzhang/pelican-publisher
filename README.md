@@ -16,7 +16,7 @@ Create file `pelican-publisher.env`
 
 ```env
 ALLOWED_HOSTS=["rexzhang.com"]
-HOST_URL_PATH_PREFIX=/pelican-publisher
+HOST_URL_PATH_PREFIX=pelican-publisher/
 PELICAN_SITES=[{"NAME":"rexzhang.com","ZIP_URL":"https://github.com/rexzhang/rexzhang.com/archive/master.zip","WEBHOOK_SECRET":"please-change-it-!"},{"NAME":"sample.com","ZIP_URL":"https://sample.com/master.zip","WEBHOOK_SECRET":"secret"}]
 ```
 
@@ -46,10 +46,11 @@ docker run -dit -p 127.0.0.1:8000:8000 --restart unless-stopped \
 
 ## Example
 
-| instance | <https://pelican-publisher.rexzhang.com>   |
-| -------- | ------------------------------------------ |
-| source   | <https://github.com/rexzhang/rexzhang.com> |
-| target   | <https://rexzhang.com>                     |
+| instance | <https://pelican-publisher.rexzhang.com>                             |
+| -------- | -------------------------------------------------------------------- |
+| source   | <https://github.com/rexzhang/rexzhang.com>                           |
+| target   | <https://rexzhang.com>                                               |
+| webhook  | <https://rexzhang.com/pelican-publisher/webhook/github/rexzhang.com> |
 
 ## TODO
 
